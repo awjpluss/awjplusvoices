@@ -1,957 +1,451 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>أوج بلس — تعليق صوتي احترافي وفيديوهات إعلانية</title>
-  <meta name="description" content="أوج بلس — نخبة من المعلقين والمعلقات الصوتية وفريق متخصص في إنتاج الفيديوهات الإعلانية والمحتوى الإبداعي." />
-  <meta property="og:title" content="أوج بلس — تعليق صوتي احترافي وفيديوهات إعلانية" />
-  <meta property="og:description" content="نخبة من المعلقين والمعلقات الصوتية وفريق متخصص في إنتاج الفيديوهات الإعلانية والمحتوى الإبداعي." />
-  <meta name="theme-color" content="#071827" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>أوج بلس | أوج الصوت والإعلان</title>
+    <meta name="description" content="منصة أوج بلس - اختيارك الأول للتعليق الصوتي وإنتاج الفيديوهات الإعلانية الاحترافية.">
+    
+    <!-- الخطوط والجماليات -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a1a1a',
+                        accent: '#c5a059', // لون ذهبي خافت للمسة فخامة
+                    },
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 
-  <!-- External libs (lazy loaded where possible) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-normalize/modern-normalize.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script defer src="https://unpkg.com/wavesurfer.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.min.js"></script>
-
-  <style>
-    /* ===========================
-       Mobile-first Fluid Design
-       =========================== */
-    :root{
-      --bg:#071021;
-      --card:#0f1724;
-      --muted:#9aa6b2;
-      --accent:#00c2a8;
-      --glass: rgba(255,255,255,0.04);
-      --glass-border: rgba(255,255,255,0.06);
-      --radius:14px;
-      --max-width:1100px;
-      --touch-min:44px;
-      --gap:clamp(8px, 2.2vw, 18px);
-      --pad:clamp(12px, 3vw, 22px);
-      --font-sans: "Noto Sans Arabic", "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
-      --card-elev: 0 8px 24px rgba(2,6,23,0.6);
-    }
-
-    /* Respect user reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
-    }
-
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--font-sans);
-      background:linear-gradient(180deg,var(--bg),#071827);
-      color:#e6eef6;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
-      padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
-      box-sizing:border-box;
-      display:flex;
-      justify-content:center;
-      touch-action:manipulation;
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
-    }
-
-    .app{
-      width:100%;
-      max-width:var(--max-width);
-      padding:0 clamp(12px,4vw,28px);
-      box-sizing:border-box;
-    }
-
-    /* Fluid typography */
-    h1,h2,h3,h4{line-height:1.15}
-    h1{font-size:clamp(18px,4.6vw,22px);margin:0}
-    h2{font-size:clamp(18px,4.2vw,20px);margin:0}
-    h3{font-size:clamp(15px,3.8vw,18px);margin:0}
-    h4{font-size:clamp(14px,3.6vw,16px);margin:0}
-
-    p{margin:0;color:var(--muted);font-size:clamp(13px,3.2vw,14px)}
-
-    /* Header */
-    header{
-      display:flex;
-      gap:var(--gap);
-      align-items:center;
-      justify-content:space-between;
-      margin:var(--gap) 0;
-      padding:calc(var(--pad) / 2) 0;
-    }
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{
-      width:48px;height:48px;border-radius:12px;
-      background:linear-gradient(135deg,#06202b,#0b2b3a);
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:var(--card-elev);
-      border:1px solid var(--glass-border);
-      font-weight:700;font-size:18px;color:var(--accent);
-      flex-shrink:0;
-    }
-    nav{display:flex;gap:8px;align-items:center}
-
-    /* Buttons - touch-first */
-    .btn{
-      background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
-      border:1px solid var(--glass-border);
-      color:var(--accent);
-      padding:12px 14px;border-radius:12px;font-weight:700;
-      text-decoration:none;font-size:14px;
-      display:inline-flex;gap:8px;align-items:center;
-      min-height:var(--touch-min);min-width:48px;
-      justify-content:center;
-      -webkit-user-select:none;user-select:none;
-    }
-    .btn.secondary{color:#cfeff0;border-color:transparent;background:transparent}
-    .small-btn{
-      padding:10px 12px;border-radius:10px;border:1px solid var(--glass-border);
-      background:transparent;color:#cfeff0;font-weight:700;font-size:14px;min-height:var(--touch-min);
-    }
-
-    /* Hero */
-    .hero{
-      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:16px;padding:var(--pad);border:1px solid var(--glass-border);
-      display:flex;gap:var(--gap);align-items:center;flex-wrap:wrap;margin-bottom:var(--gap);
-      box-shadow: var(--card-elev);
-    }
-    .hero-left{flex:1;min-width:160px}
-    .hero p{margin-top:8px}
-    .hero-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-
-    .wave-wrap{
-      width:100%;
-      max-width:360px;
-      height:72px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
-      display:flex;align-items:center;justify-content:center;padding:8px;border:1px solid var(--glass-border);
-      box-sizing:border-box;
-    }
-    .wave-canvas{width:100%;height:56px}
-
-    /* Sections */
-    section{margin-bottom:var(--gap)}
-    .section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .section-title h3{margin:0;font-size:16px}
-    .grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-    @media(min-width:600px){
-      .grid{grid-template-columns:repeat(2,1fr)}
-    }
-    @media(min-width:900px){
-      .grid{grid-template-columns:repeat(3,1fr)}
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px;padding:12px;border:1px solid var(--glass-border);
-      display:flex;gap:12px;align-items:flex-start;box-shadow:0 6px 18px rgba(0,0,0,0.45);
-    }
-    .avatar{width:72px;height:72px;border-radius:10px;background:#0b1722;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
-    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
-    .meta{flex:1}
-    .meta h4{margin:0 0 6px 0}
-    .meta p{margin:0;color:var(--muted);font-size:13px}
-    .badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-    .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px;color:#dff7f0;border:1px solid rgba(255,255,255,0.03)}
-
-    .card-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-
-    /* Player */
-    .player{margin-top:8px;width:100%}
-    .audio-controls{display:flex;gap:8px;align-items:center}
-    .progress{flex:1;height:6px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#00f0d0);width:0%}
-
-    /* Filters & Search - touch friendly */
-    .filters{display:flex;gap:8px;flex-wrap:wrap}
-    .select, .search{
-      background:transparent;border:1px solid var(--glass-border);padding:12px;border-radius:10px;color:#e6eef6;
-      min-width:120px;font-size:14px;min-height:var(--touch-min);
-    }
-    .search{flex:1;min-width:140px}
-
-    /* Skeleton */
-    .skeleton{background:linear-gradient(90deg,#0b1724 0%, #0f2230 50%, #0b1724 100%);height:12px;border-radius:6px;opacity:0.6}
-    .skeleton-card{height:110px;border-radius:12px;background:linear-gradient(90deg,#07121a,#0b1724);border:1px solid var(--glass-border)}
-
-    /* Footer */
-    footer{margin-top:var(--gap);padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid var(--glass-border);display:flex;flex-direction:column;gap:8px}
-    .footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-    .footer-links{display:flex;gap:10px;flex-wrap:wrap}
-    .muted{color:var(--muted);font-size:13px}
-
-    /* Modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:calc(12px + env(safe-area-inset-bottom));z-index:60}
-    .modal{background:linear-gradient(180deg,#071827,#071827);border-radius:12px;padding:16px;border:1px solid var(--glass-border);max-width:720px;width:100%;box-sizing:border-box}
-    .modal.show{display:block}
-
-    /* Bottom sticky CTA (safe area aware) */
-    .bottom-cta{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:calc(12px + env(safe-area-inset-bottom));
-      z-index:80;
-      width:calc(100% - 32px);
-      max-width:720px;
-      display:flex;
-      justify-content:center;
-      pointer-events:auto;
-    }
-    .bottom-cta .btn{width:100%;justify-content:center;padding:14px 16px;border-radius:14px;font-size:16px}
-
-    /* Accessibility focus */
-    a:focus, button:focus, input:focus, select:focus{outline:3px solid rgba(0,194,168,0.18);outline-offset:2px}
-
-    /* Hide overflow issues on small devices */
-    img,video{max-width:100%;height:auto;display:block}
-
-    /* Landscape adjustments for phones */
-    @media (orientation: landscape) and (max-width:900px){
-      .hero{flex-direction:row;align-items:center}
-      .wave-wrap{max-width:260px;height:56px}
-    }
-
-    /* Larger screens */
-    @media(min-width:1100px){
-      body{padding:20px 0}
-      .hero{padding:22px}
-    }
-
-    /* Utility */
-    .hidden{display:none}
-    .center{text-align:center}
-    .muted-small{color:var(--muted);font-size:12px}
-  </style>
+    <style>
+        :root { --accent: #c5a059; }
+        body { font-family: 'Tajawal', sans-serif; transition: background-color 0.3s; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .dark .glass { background: rgba(26, 26, 26, 0.8); }
+        .hero-gradient { background: radial-gradient(circle at center, #2d2d2d 0%, #1a1a1a 100%); }
+        .skeleton { background: #e0e0e0; position: relative; overflow: hidden; }
+        .skeleton::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); animation: loading 1.5s infinite; }
+        @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        /* تخصيص الـ Audio Player */
+        input[type=range]::-webkit-slider-runnable-track { background: #ddd; height: 4px; border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; border-radius: 50%; background: var(--accent); margin-top: -4px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .custom-video-container iframe { width: 100%; aspect-ratio: 16/9; border-radius: 12px; }
+    </style>
 </head>
-<body>
-  <main class="app" id="app" aria-live="polite">
-    <!-- Header -->
-    <header>
-      <div class="brand" aria-hidden="false">
-        <div class="logo" aria-hidden="true">أوج+</div>
-        <div>
-          <h1>أوج بلس</h1>
-          <p class="muted">تعليق صوتي احترافي وفيديوهات إعلانية تصنع حضورًا أقوى لعلامتك التجارية.</p>
-        </div>
-      </div>
-      <nav aria-label="روابط سريعة">
-        <a class="btn" id="btn-browse-voices" href="#voices">الأصوات</a>
-        <a class="btn secondary" id="btn-watch-videos" href="#videos">الفيديوهات</a>
-      </nav>
-    </header>
+<body class="bg-gray-50 text-gray-900 dark:bg-primary dark:text-gray-100 overflow-x-hidden">
 
-    <!-- Hero -->
-    <section class="hero" role="region" aria-labelledby="hero-title">
-      <div class="hero-left">
-        <h2 id="hero-title">صوتك يبدأ من أوج بلس</h2>
-        <p>نخبة من المعلقين والمعلقات الصوتية وفريق متخصص في إنتاج الفيديوهات الإعلانية والمحتوى الإبداعي.</p>
-        <div class="hero-actions">
-          <a class="btn" href="#voices">استعرض الأصوات</a>
-          <a class="btn secondary" href="#videos">شاهد الفيديوهات</a>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center text-white font-bold text-xl">أ</div>
+                <span class="text-xl font-extrabold tracking-tight">أوج <span class="text-accent">بلس</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <i data-lucide="moon" class="hidden dark:block"></i>
+                    <i data-lucide="sun" class="block dark:hidden"></i>
+                </button>
+                <a href="#contact" class="hidden md:block bg-accent text-white px-5 py-2 rounded-full font-medium hover:opacity-90 transition">تواصل معنا</a>
+            </div>
         </div>
-      </div>
-      <div class="wave-wrap" aria-hidden="false" title="معاينة موجة صوتية">
-        <div id="hero-wave" class="wave-canvas" role="img" aria-label="موجة صوتية متحركة"></div>
-      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 px-4 hero-gradient text-white overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">نصنع للصوت صورة... <br><span class="text-accent">وللإعلان حضوراً</span></h1>
+            <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
+                منصة أوج بلس تضم نخبة من المعلقين والمعلقات الصوتيين لتقديم إنتاج إعلاني متكامل يلامس القلوب ويحقق النتائج.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#voices" class="bg-accent text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition hover:scale-105">
+                    <i data-lucide="mic"></i> استعرض المعلقين
+                </a>
+                <a href="#portfolio" class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition hover:bg-white/20">
+                    <i data-lucide="play-circle"></i> شاهد أعمالنا
+                </a>
+            </div>
+        </div>
+        <!-- Decorative Wave -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
+            <svg class="relative block w-full h-12" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C58.47,112.49,123.39,110.3,181.33,103.62,246.22,96.14,282.49,63.76,321.39,56.44Z" class="fill-gray-50 dark:fill-primary"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Stats/Services -->
+    <section class="py-12 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+                <div class="text-accent mb-2 flex justify-center"><i data-lucide="mic-2"></i></div>
+                <h3 class="font-bold text-lg">تعليق محترف</h3>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+                <div class="text-accent mb-2 flex justify-center"><i data-lucide="video"></i></div>
+                <h3 class="font-bold text-lg">فيديو إعلاني</h3>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+                <div class="text-accent mb-2 flex justify-center"><i data-lucide="languages"></i></div>
+                <h3 class="font-bold text-lg">لهجات متعددة</h3>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+                <div class="text-accent mb-2 flex justify-center"><i data-lucide="Zap"></i></div>
+                <h3 class="font-bold text-lg">سرعة التنفيذ</h3>
+            </div>
+        </div>
     </section>
 
     <!-- Filters & Search -->
-    <section aria-labelledby="filters-title">
-      <div class="section-title">
-        <h3 id="filters-title">البحث والفلترة</h3>
-        <div class="muted-small">ابحث داخل الأسماء، الوصف، النوع، اللهجة، الأسلوب، والـ Badges</div>
-      </div>
-
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <input id="search" class="search" type="search" placeholder="ابحث عن اسم، لهجة، نوع، أو Badge" aria-label="بحث سريع" />
-        <select id="filter-type" class="select" aria-label="فلتر النوع">
-          <option value="">الكل</option>
-        </select>
-        <select id="filter-gender" class="select" aria-label="فلتر النوع الاجتماعي">
-          <option value="">الكل</option>
-          <option value="male">رجالي</option>
-          <option value="female">نسائي</option>
-        </select>
-        <select id="filter-dialect" class="select" aria-label="فلتر اللهجة">
-          <option value="">الكل</option>
-        </select>
-        <select id="filter-badge" class="select" aria-label="فلتر Badge">
-          <option value="">الكل</option>
-        </select>
-        <button id="clear-filters" class="small-btn" aria-label="مسح الفلاتر">مسح</button>
-      </div>
-    </section>
-
-    <!-- Services -->
-    <section aria-labelledby="services-title">
-      <div class="section-title">
-        <h3 id="services-title">خدماتنا</h3>
-        <div class="muted-small">التعليق الصوتي، المعلقات، المعلقون، الفيديوهات الإعلانية، الإعلانات التجارية، المحتوى التعليمي والمؤسسي</div>
-      </div>
-
-      <div class="grid" id="services-grid" role="list">
-        <!-- Cards generated dynamically -->
-      </div>
-    </section>
-
-    <!-- Voices Library -->
-    <section id="voices" aria-labelledby="voices-title">
-      <div class="section-title">
-        <h3 id="voices-title">مكتبة الأصوات</h3>
-        <div class="muted-small">كل بطاقة تعرض البيانات الحقيقية من المصدر.</div>
-      </div>
-
-      <div id="voices-grid" class="grid" role="list">
-        <!-- Voice cards -->
-      </div>
-      <div id="voices-empty" class="center muted-small hidden">لا توجد نتائج حالياً.</div>
-    </section>
-
-    <!-- Videos -->
-    <section id="videos" aria-labelledby="videos-title">
-      <div class="section-title">
-        <h3 id="videos-title">أعمالنا الإعلانية</h3>
-        <div class="muted-small">نماذج الفيديو الإعلاني المتاحة.</div>
-      </div>
-
-      <div id="videos-grid" class="grid" role="list">
-        <!-- Video cards -->
-      </div>
-      <div id="videos-empty" class="center muted-small hidden">لا توجد فيديوهات حالياً.</div>
-    </section>
-
-    <!-- Order / Contact -->
-    <section id="order" aria-labelledby="order-title">
-      <div class="section-title">
-        <h3 id="order-title">اطلب خدمتك عبر WhatsApp</h3>
-        <div class="muted-small">نستخدم رسالة ذكية جاهزة لإرسال تفاصيل الطلب.</div>
-      </div>
-
-      <div class="card" style="align-items:center">
-        <div style="flex:1">
-          <p class="muted-small">اضغط على "اطلب عبر WhatsApp" لفتح محادثة جاهزة مع فريق أوج بلس.</p>
+    <section id="voices" class="py-8 px-4 sticky top-16 z-40 glass border-b border-gray-100 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto space-y-4">
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+                <div class="relative w-full md:w-96">
+                    <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث عن معلق، لهجة، أو خدمة..." 
+                        class="w-full pr-12 pl-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 focus:ring-2 focus:ring-accent outline-none">
+                </div>
+                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 w-full md:w-auto">
+                    <button onclick="filterContent('all')" class="filter-btn active bg-accent text-white px-6 py-2 rounded-full whitespace-nowrap">الكل</button>
+                    <button onclick="filterContent('voice')" class="filter-btn bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full whitespace-nowrap">معلقين</button>
+                    <button onclick="filterContent('video')" class="filter-btn bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full whitespace-nowrap">فيديو</button>
+                    <button onclick="filterContent('خليجي')" class="filter-btn bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full whitespace-nowrap">خليجي</button>
+                </div>
+            </div>
         </div>
-        <div>
-          <button id="order-whatsapp" class="btn" aria-label="اطلب عبر واتساب">اطلب عبر WhatsApp</button>
-        </div>
-      </div>
     </section>
 
-    <!-- Modal for details -->
-    <div id="modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="modal" id="modal" role="document">
-        <div id="modal-content"></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-          <button id="modal-close" class="small-btn">إغلاق</button>
-          <button id="modal-order" class="btn">اطلب هذا الصوت</button>
+    <!-- Main Grid -->
+    <main class="py-12 px-4 max-w-7xl mx-auto">
+        <div id="contentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Skeleton Loading Items -->
+            <div class="skeleton h-80 rounded-3xl"></div>
+            <div class="skeleton h-80 rounded-3xl"></div>
+            <div class="skeleton h-80 rounded-3xl"></div>
         </div>
-      </div>
-    </div>
+        <div id="emptyState" class="hidden text-center py-20">
+            <i data-lucide="info" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+            <h3 class="text-xl font-bold">لم نجد نتائج تطابق بحثك</h3>
+            <p class="text-gray-500">جرب تغيير الكلمات المفتاحية أو الفلتر</p>
+        </div>
+    </main>
 
     <!-- Footer -->
-    <footer>
-      <div class="footer-top">
-        <div>
-          <strong>أوج بلس</strong>
-          <div class="muted">خدمات التعليق الصوتي والفيديوهات الإعلانية والمحتوى الإبداعي.</div>
+    <footer id="contact" class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 pt-16 pb-8 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            <div>
+                <h2 class="text-2xl font-bold mb-4">أوج <span class="text-accent">بلس</span></h2>
+                <p class="text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+                    المكان الأمثل لاختيار الصوت المناسب لمشروعك القادم. نجمع لك أفضل المواهب في مكان واحد.
+                </p>
+                <div class="flex gap-4">
+                    <a href="https://www.tiktok.com/@awj.store.sa" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-accent hover:text-white transition"><i data-lucide="music-2"></i></a>
+                    <a href="https://youtube.com/@awj.stores" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-accent hover:text-white transition"><i data-lucide="youtube"></i></a>
+                    <a href="mailto:awj.plus.store.s@gmail.com" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-accent hover:text-white transition"><i data-lucide="mail"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg mb-6">روابط سريعة</h3>
+                <ul class="space-y-4 text-gray-500">
+                    <li><a href="#" class="hover:text-accent">الرئيسية</a></li>
+                    <li><a href="#voices" class="hover:text-accent">المعلقين</a></li>
+                    <li><a href="#portfolio" class="hover:text-accent">نماذج الأعمال</a></li>
+                    <li><a href="https://wa.me/966539167059" class="hover:text-accent">اطلب خدمتك</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg mb-6">تواصل مباشر</h3>
+                <a href="https://wa.me/966539167059" class="flex items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-accent transition group">
+                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="phone"></i></div>
+                    <div>
+                        <span class="block text-sm text-gray-500">واتساب</span>
+                        <span class="font-bold">+966 53 916 7059</span>
+                    </div>
+                </a>
+            </div>
         </div>
-        <div class="footer-links">
-          <a class="muted-small" href="#voices">الأصوات</a>
-          <a class="muted-small" href="#videos">الفيديوهات</a>
-          <a class="muted-small" href="#order">تواصل معنا</a>
+        <div class="max-w-7xl mx-auto pt-8 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-500">
+            &copy; 2024 أوج بلس. جميع الحقوق محفوظة.
         </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
-        <div class="muted-small">WhatsApp: <strong style="color:var(--accent)">+966539167059</strong></div>
-        <div class="muted-small">Email: <strong style="color:var(--accent)">awj.plus.store.s@gmail.com</strong></div>
-        <div class="muted-small">TikTok / YouTube متاحة في أسفل الموقع</div>
-      </div>
     </footer>
 
-    <!-- Bottom sticky CTA (mobile-first) -->
-    <div class="bottom-cta" aria-hidden="false">
-      <button id="bottom-order" class="btn" aria-label="اطلب الآن عبر واتساب">اطلب الآن عبر WhatsApp</button>
+    <!-- Details Modal -->
+    <div id="modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="relative bg-white dark:bg-gray-900 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 left-4 z-10 w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white backdrop-blur-md">
+                <i data-lucide="x"></i>
+            </button>
+            <div id="modalContent" class="max-h-[90vh] overflow-y-auto">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
     </div>
-  </main>
 
-  <script>
-    /******************************************************************
-     * Mobile-first single-file app (updated)
-     * - Uses the exact Google Sheets and Published CSV links provided.
-     * - Prioritizes mobile UX: safe-area, touch targets, fluid layout.
-     * - Lazy loads heavy players only on interaction.
-     ******************************************************************/
-    const CONFIG = {
-      sheetAdminUrl: "https://docs.google.com/spreadsheets/d/1e34QHFUFAnuAfKmjmsf3GLVWCcheFqtcUCL4HYjDaiM/edit?usp=sharing",
-      publishedCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6RyvMd9y1fkqkByBmwnvUlnvG2GecjY4BQgm5Tiu-oxe0mcoWa704KhYTunUqYUlBunO4cKqb_iiQ/pub?output=csv",
-      whatsappNumber: "+966539167059",
-      whatsappBase: "https://api.whatsapp.com/send",
-      siteName: "أوج بلس"
-    };
-
-    const $ = (sel, ctx=document) => ctx.querySelector(sel);
-    const el = (tag, attrs={}, children=[]) => {
-      const node = document.createElement(tag);
-      for(const k in attrs){
-        if(k === 'class') node.className = attrs[k];
-        else if(k === 'html') node.innerHTML = attrs[k];
-        else node.setAttribute(k, attrs[k]);
-      }
-      (Array.isArray(children) ? children : [children]).forEach(c => {
-        if(typeof c === 'string') node.appendChild(document.createTextNode(c));
-        else if(c) node.appendChild(c);
-      });
-      return node;
-    };
-
-    /* ---------------------------
-       Data Layer (client-side CSV parsing)
-       --------------------------- */
-    const DataLayer = (function(){
-      let rawRows = [];
-      let mapped = [];
-      let badgesSet = new Set();
-      let typesSet = new Set();
-      let dialectsSet = new Set();
-
-      const safe = v => (v === undefined || v === null) ? "" : String(v).trim();
-
-      function parseBadges(val){
-        if(!val) return [];
-        return String(val).split(/[\|,;\/]+/).map(s => s.trim()).filter(Boolean);
-      }
-
-      function mapRow(rowObj, index){
-        const r = {};
-        for(const k in rowObj) r[k] = safe(rowObj[k]);
-
-        const lowerKeys = Object.keys(rowObj).reduce((acc,k)=>{
-          acc[k.toLowerCase().replace(/\s+/g,'')] = k; return acc;
-        },{});
-
-        const get = nameVariants => {
-          for(const v of nameVariants){
-            const key = lowerKeys[v.toLowerCase().replace(/\s+/g,'')];
-            if(key) return safe(rowObj[key]);
-          }
-          return "";
+    <!-- JavaScript Logic -->
+    <script>
+        // CONFIGURATION
+        const CONFIG = {
+            DATA_SOURCE_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6RyvMd9y1fkqkByBmwnvUlnvG2GecjY4BQgm5Tiu-oxe0mcoWa704KhYTunUqYUlBunO4cKqb_iiQ/pub?output=csv",
+            WHATSAPP_NUMBER: "966539167059",
+            DEFAULT_IMAGE: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=400",
         };
 
-        const id = get(['id','ID','Id']) || `row-${index}`;
-        const name = get(['name','title','displayname','الاسم']) || get(['voice','talent']) || r.name || r.title || "";
-        const description = get(['description','desc','bio','about','نبذة','الوصف']) || "";
-        const type = get(['type','category','service','نوع','التصنيف']) || "";
-        const gender = (get(['gender','sex','النوع']) || "").toLowerCase();
-        const dialect = get(['dialect','لهجة','accent','language','اللغة']) || "";
-        const style = get(['style','أسلوب','الاسلوب']) || "";
-        const image = get(['image','photo','avatar','picture','صورة']) || "";
-        const audio = get(['audio','sample','sound','voice_sample','نماذج','audio_url']) || "";
-        const video = get(['video','video_url','youtube','vimeo','video_link']) || "";
-        const url = get(['url','link','website']) || "";
-        const badgesRaw = get(['badges','badge','tags','labels','وسوم']) || "";
-        const badges = parseBadges(badgesRaw);
-        const status = get(['status','enabled','active','حالة']) || "active";
-        const duration = get(['duration','time']) || "";
-        const thumbnail = get(['thumbnail','poster','thumb']) || "";
+        let allData = [];
+        let currentFilter = 'all';
 
-        badges.forEach(b => badgesSet.add(b));
-        if(type) typesSet.add(type);
-        if(dialect) dialectsSet.add(dialect);
+        // Initialize Icons
+        lucide.createIcons();
 
-        return {
-          id, name, description, type, gender, dialect, style,
-          image, audio, video, url, badges, status, duration, thumbnail,
-          raw: r
-        };
-      }
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        }
 
-      async function loadFromCsvUrl(csvUrl){
-        return new Promise((resolve, reject) => {
-          if(typeof Papa === 'undefined') return reject(new Error('CSV parser unavailable'));
-          Papa.parse(csvUrl, {
-            download: true,
-            header: true,
-            skipEmptyLines: true,
-            complete: function(results){
-              if(results && results.data){
-                rawRows = results.data;
-                mapped = rawRows.map((r,i) => mapRow(r,i));
-                resolve({mapped});
-              } else {
-                reject(new Error("تعذر قراءة البيانات"));
-              }
-            },
-            error: function(err){
-              reject(err);
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Fetch Data
+        async function loadData() {
+            try {
+                const response = await fetch(CONFIG.DATA_SOURCE_URL);
+                const csvText = await response.text();
+                allData = parseCSV(csvText);
+                renderGrid(allData);
+            } catch (error) {
+                console.error("Error loading data", error);
+                document.getElementById('contentGrid').innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <p class="text-red-500">عذراً، حدث خطأ أثناء تحميل البيانات.</p>
+                        <button onclick="loadData()" class="mt-4 bg-accent text-white px-6 py-2 rounded-lg">إعادة المحاولة</button>
+                    </div>
+                `;
             }
-          });
-        });
-      }
-
-      function getAll(){
-        return mapped.filter(i => (i.status || "").toLowerCase() !== "disabled" && (i.status || "").toLowerCase() !== "false" && (i.status || "").toLowerCase() !== "0");
-      }
-      function getById(id){ return mapped.find(x => x.id === id); }
-      function getBadges(){ return Array.from(badgesSet).sort(); }
-      function getTypes(){ return Array.from(typesSet).sort(); }
-      function getDialects(){ return Array.from(dialectsSet).sort(); }
-
-      return { loadFromCsvUrl, getAll, getById, getBadges, getTypes, getDialects };
-    })();
-
-    /* ---------------------------
-       UI (mobile-first behaviors)
-       --------------------------- */
-    const UI = (function(){
-      const servicesGrid = $('#services-grid');
-      const voicesGrid = $('#voices-grid');
-      const videosGrid = $('#videos-grid');
-      const voicesEmpty = $('#voices-empty');
-      const videosEmpty = $('#videos-empty');
-
-      let state = { items: [], currentWave: null, currentPlayingId: null, plyrInstance: null };
-
-      function renderServices(items){
-        servicesGrid.innerHTML = '';
-        const types = [...new Set(items.map(i => i.type || 'عام'))].slice(0,6);
-        types.forEach(t => {
-          const card = el('div',{class:'card'},[
-            el('div',{class:'meta'},[
-              el('h4',{},[t || 'عام']),
-              el('p',{class:'muted-small'},['خدمة متاحة من أوج بلس']),
-              el('div',{class:'card-actions'},[
-                el('a',{class:'small-btn',href:'#voices',role:'button'},['استعرض']),
-                el('a',{class:'small-btn',href:'#order',role:'button'},['اطلب'])
-              ])
-            ])
-          ]);
-          servicesGrid.appendChild(card);
-        });
-      }
-
-      function buildVoiceCard(item){
-        const card = el('article',{class:'card',role:'listitem',tabindex:0});
-        const avatar = el('div',{class:'avatar'});
-        const img = el('img',{alt:`صورة ${item.name}`,loading:'lazy'});
-        img.src = item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="%230b1722"/></svg>';
-        avatar.appendChild(img);
-
-        const meta = el('div',{class:'meta'});
-        meta.appendChild(el('h4',{},[item.name || '—']));
-        meta.appendChild(el('p',{},[item.description || '—']));
-        const info = el('div',{class:'muted-small'},[
-          (item.dialect ? `اللهجة: ${item.dialect} ` : ''),
-          (item.gender ? `| النوع: ${item.gender} ` : ''),
-          (item.style ? `| الأسلوب: ${item.style}` : '')
-        ]);
-        meta.appendChild(info);
-
-        const badgesWrap = el('div',{class:'badges'});
-        (item.badges || []).slice(0,6).forEach(b => badgesWrap.appendChild(el('span',{class:'badge'},[b])));
-        meta.appendChild(badgesWrap);
-
-        const playerWrap = el('div',{class:'player'});
-        if(item.audio){
-          const playBtn = el('button',{class:'small-btn',type:'button',ariaLabel:`استمع إلى ${item.name}`},['استمع الآن']);
-          const detailsBtn = el('button',{class:'small-btn',type:'button',ariaLabel:`عرض تفاصيل ${item.name}`},['عرض التفاصيل']);
-          const orderBtn = el('button',{class:'btn',type:'button',ariaLabel:`اطلب ${item.name}`},['اطلب الخدمة']);
-          const controls = el('div',{class:'card-actions'},[playBtn, detailsBtn, orderBtn]);
-          playerWrap.appendChild(controls);
-
-          const waveContainer = el('div',{class:'wave-wrap hidden',style:'margin-top:8px'},[
-            el('div',{class:'wave-canvas',id:`wave-${item.id}`})
-          ]);
-          playerWrap.appendChild(waveContainer);
-
-          playBtn.addEventListener('click', async () => { await playAudio(item); });
-          detailsBtn.addEventListener('click', () => openModal(item));
-          orderBtn.addEventListener('click', () => orderWhatsApp(item));
-        } else {
-          playerWrap.appendChild(el('div',{class:'muted-small'},['لا توجد عينات صوتية متاحة']));
         }
 
-        card.appendChild(avatar);
-        card.appendChild(meta);
-        card.appendChild(playerWrap);
-        return card;
-      }
-
-      function buildVideoCard(item){
-        const card = el('article',{class:'card',role:'listitem',tabindex:0});
-        const thumb = el('div',{class:'avatar'});
-        const img = el('img',{alt:`صورة مصغرة ${item.name}`,loading:'lazy'});
-        img.src = item.thumbnail || item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="%230b1722"/></svg>';
-        thumb.appendChild(img);
-
-        const meta = el('div',{class:'meta'});
-        meta.appendChild(el('h4',{},[item.name || item.title || '—']));
-        meta.appendChild(el('p',{class:'muted-small'},[item.description || '—']));
-        const info = el('div',{class:'muted-small'},[
-          (item.duration ? `المدة: ${item.duration} ` : ''),
-          (item.type ? `| النوع: ${item.type}` : '')
-        ]);
-        meta.appendChild(info);
-
-        const badgesWrap = el('div',{class:'badges'});
-        (item.badges || []).slice(0,6).forEach(b => badgesWrap.appendChild(el('span',{class:'badge'},[b])));
-        meta.appendChild(badgesWrap);
-
-        const actions = el('div',{class:'card-actions'},[
-          el('button',{class:'small-btn',type:'button'},['شاهد']),
-          el('button',{class:'btn',type:'button'},['اطلب فيديو مشابه'])
-        ]);
-        actions.querySelectorAll('button')[0].addEventListener('click', () => openVideoPlayer(item));
-        actions.querySelectorAll('button')[1].addEventListener('click', () => orderWhatsApp(item));
-        meta.appendChild(actions);
-
-        card.appendChild(thumb);
-        card.appendChild(meta);
-        return card;
-      }
-
-      function renderVoices(items){
-        voicesGrid.innerHTML = '';
-        if(!items.length){
-          voicesEmpty.classList.remove('hidden');
-          return;
-        } else voicesEmpty.classList.add('hidden');
-
-        items.forEach(item => voicesGrid.appendChild(buildVoiceCard(item)));
-      }
-      function renderVideos(items){
-        videosGrid.innerHTML = '';
-        const vids = items.filter(i => i.video);
-        if(!vids.length){
-          videosEmpty.classList.remove('hidden');
-          return;
-        } else videosEmpty.classList.add('hidden');
-
-        vids.forEach(item => videosGrid.appendChild(buildVideoCard(item)));
-      }
-
-      /* Audio playback - lazy wavesurfer */
-      async function playAudio(item){
-        if(state.currentWave && state.currentPlayingId === item.id){
-          if(state.currentWave.isPlaying()) state.currentWave.pause();
-          else state.currentWave.play();
-          return;
-        }
-        if(state.currentWave){ try{ state.currentWave.destroy(); }catch(e){} state.currentWave = null; state.currentPlayingId = null; }
-
-        const waveEl = document.getElementById(`wave-${item.id}`);
-        if(!waveEl) return;
-        waveEl.parentElement.classList.remove('hidden');
-
-        // ensure WaveSurfer available
-        if(typeof WaveSurfer === 'undefined'){
-          alert('مشغل الصوت غير متاح حالياً');
-          return;
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+            return lines.slice(1).map(line => {
+                const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); // Advanced split to handle commas in quotes
+                const obj = {};
+                headers.forEach((header, i) => {
+                    if(values[i]) obj[header] = values[i].replace(/^"|"$/g, '').trim();
+                });
+                return obj;
+            }).filter(item => item.id && item.active === 'true');
         }
 
-        const ws = WaveSurfer.create({
-          container: waveEl,
-          waveColor: '#0b2b3a',
-          progressColor: '#00c2a8',
-          height:48,
-          responsive:true,
-          normalize:true,
-          backend: 'MediaElement'
-        });
+        // Audio Management
+        let currentAudio = null;
+        let currentBtn = null;
 
-        const audioUrl = normalizeMediaUrl(item.audio, 'audio');
-        try{ ws.load(audioUrl); }catch(e){ alert('تعذر تشغيل العينة الصوتية'); return; }
-
-        ws.on('ready', () => { ws.play(); });
-        ws.on('error', () => { alert('تعذر تشغيل العينة الصوتية'); });
-
-        state.currentWave = ws;
-        state.currentPlayingId = item.id;
-      }
-
-      /* Video player modal (lazy Plyr) */
-      function openVideoPlayer(item){
-        const modalContent = $('#modal-content');
-        modalContent.innerHTML = '';
-        const videoUrl = normalizeMediaUrl(item.video, 'video');
-        const videoEl = el('video',{id:'plyr-video',controls:true,playsinline:true,poster:item.thumbnail || item.image || ''});
-        const source = el('source',{src:videoUrl,type:'video/mp4'});
-        videoEl.appendChild(source);
-        modalContent.appendChild(videoEl);
-        showModal();
-
-        setTimeout(() => {
-          if(typeof Plyr !== 'undefined'){
-            try{ if(state.plyrInstance) state.plyrInstance.destroy(); }catch(e){}
-            state.plyrInstance = new Plyr('#plyr-video', {controls:['play','progress','current-time','mute','volume','fullscreen']});
-          }
-        }, 120);
-      }
-
-      function showModal(){
-        const backdrop = $('#modal-backdrop');
-        backdrop.style.display = 'flex';
-        backdrop.setAttribute('aria-hidden','false');
-        document.body.style.overflow = 'hidden';
-      }
-      function closeModal(){
-        const backdrop = $('#modal-backdrop');
-        backdrop.style.display = 'none';
-        backdrop.setAttribute('aria-hidden','true');
-        document.body.style.overflow = '';
-        if(state.currentWave){ try{ state.currentWave.destroy(); }catch(e){} state.currentWave = null; state.currentPlayingId = null; }
-        if(state.plyrInstance){ try{ state.plyrInstance.destroy(); }catch(e){} state.plyrInstance = null; }
-      }
-
-      function openModal(item){
-        const modalContent = $('#modal-content');
-        modalContent.innerHTML = '';
-        modalContent.appendChild(el('div',{class:'center'},[
-          el('h3',{},[item.name]),
-          el('p',{class:'muted-small'},[item.description || '—'])
-        ]));
-        if(item.audio){
-          const sampleWrap = el('div',{style:'margin-top:12px'});
-          const sampleBtn = el('button',{class:'btn'},['استمع إلى العينات']);
-          sampleWrap.appendChild(sampleBtn);
-          modalContent.appendChild(sampleWrap);
-          sampleBtn.addEventListener('click', () => playAudio(item));
-        }
-        const orderBtn = $('#modal-order');
-        orderBtn.onclick = () => orderWhatsApp(item);
-        showModal();
-      }
-
-      function orderWhatsApp(item){
-        const lines = [
-          `مرحبًا أوج بلس،`,
-          `أرغب في طلب خدمة من المتجر.`,
-          ``,
-          `المعلق/ة: ${item.name || '—'}`,
-          `الخدمة: ${item.type || 'تعليق صوتي'}`,
-          `النموذج: ${item.style || item.badges.join(', ') || '—'}`,
-          ``,
-          `أرغب بمعرفة التفاصيل والتكلفة.`,
-          ``,
-          `المرجع: ${CONFIG.siteName}`
-        ];
-        const text = encodeURIComponent(lines.join('\n'));
-        const url = `${CONFIG.whatsappBase}?phone=${encodeURIComponent(CONFIG.whatsappNumber)}&text=${text}`;
-        window.open(url, '_blank', 'noopener');
-      }
-
-      function normalizeMediaUrl(url, kind){
-        if(!url) return '';
-        try{
-          const u = String(url).trim();
-          if(u.startsWith('http')) {
-            const driveFileMatch = u.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
-            if(driveFileMatch){
-              const id = driveFileMatch[1];
-              return `https://drive.google.com/uc?export=download&id=${id}`;
+        function toggleAudio(id, url, btn) {
+            if (currentAudio && !currentAudio.paused) {
+                currentAudio.pause();
+                if (currentBtn) currentBtn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
+                lucide.createIcons();
+                if (currentAudio.src.includes(url)) {
+                    currentAudio = null;
+                    return;
+                }
             }
-            const openIdMatch = u.match(/open\?id=([a-zA-Z0-9_-]{10,})/);
-            if(openIdMatch){
-              const id = openIdMatch[1];
-              return `https://drive.google.com/uc?export=download&id=${id}`;
+
+            const audio = new Audio(url);
+            audio.play();
+            btn.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i>`;
+            lucide.createIcons();
+            
+            currentAudio = audio;
+            currentBtn = btn;
+
+            audio.onended = () => {
+                btn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
+                lucide.createIcons();
+                currentAudio = null;
+            };
+        }
+
+        // Render Functions
+        function renderGrid(data) {
+            const grid = document.getElementById('contentGrid');
+            const empty = document.getElementById('emptyState');
+            grid.innerHTML = '';
+
+            const filtered = data.filter(item => {
+                const matchesFilter = currentFilter === 'all' || item.type === currentFilter || item.category === currentFilter || item.dialect === currentFilter;
+                const matchesSearch = item.name.toLowerCase().includes(searchTerm) || 
+                                    (item.dialect && item.dialect.toLowerCase().includes(searchTerm)) ||
+                                    (item.specialty && item.specialty.toLowerCase().includes(searchTerm));
+                return matchesFilter && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                empty.classList.remove('hidden');
+            } else {
+                empty.classList.add('hidden');
+                filtered.forEach(item => {
+                    grid.appendChild(createCard(item));
+                });
             }
-            return u;
-          }
-          return u;
-        }catch(e){
-          return url;
-        }
-      }
-
-      function applyFiltersAndSearch(items){
-        const q = ($('#search').value || '').trim().toLowerCase();
-        const type = $('#filter-type').value;
-        const gender = $('#filter-gender').value;
-        const dialect = $('#filter-dialect').value;
-        const badge = $('#filter-badge').value;
-
-        let res = items.slice();
-
-        if(type) res = res.filter(i => (i.type || '').toLowerCase() === type.toLowerCase());
-        if(gender) res = res.filter(i => (i.gender || '').toLowerCase() === gender.toLowerCase());
-        if(dialect) res = res.filter(i => (i.dialect || '').toLowerCase() === dialect.toLowerCase());
-        if(badge) res = res.filter(i => (i.badges || []).map(b=>b.toLowerCase()).includes(badge.toLowerCase()));
-
-        if(q){
-          res = res.filter(i => {
-            const hay = [
-              i.name, i.description, i.type, i.dialect, i.style, (i.badges||[]).join(' ')
-            ].join(' ').toLowerCase();
-            return hay.includes(q);
-          });
+            lucide.createIcons();
         }
 
-        return res;
-      }
+        function createCard(item) {
+            const div = document.createElement('div');
+            div.className = "bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition hover:shadow-xl hover:-translate-y-1 group";
+            
+            const badges = item.badges ? item.badges.split(',').map(b => `<span class="bg-accent/10 text-accent text-[10px] px-2 py-1 rounded-full font-bold">${b}</span>`).join('') : '';
 
-      function renderAll(items){
-        state.items = items;
-        renderServices(items);
-        renderVoices(items);
-        renderVideos(items);
-      }
+            const isVideo = item.type === 'video';
+            const mediaAction = isVideo 
+                ? `<button onclick="openModal('${item.id}')" class="bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-accent transition"><i data-lucide="play"></i></button>`
+                : `<button onclick="toggleAudio('${item.id}', '${item.audio_url}', this)" class="bg-accent text-white p-4 rounded-full shadow-lg shadow-accent/30 hover:scale-110 transition"><i data-lucide="play"></i></button>`;
 
-      return { renderAll, applyFiltersAndSearch, closeModal };
-    })();
+            div.innerHTML = `
+                <div class="relative h-48 overflow-hidden">
+                    <img src="${item.image_url || CONFIG.DEFAULT_IMAGE}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 right-4 flex gap-1">${badges}</div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition duration-300">
+                        ${mediaAction}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-xl">${item.name}</h3>
+                        <span class="text-xs text-gray-400 font-medium">${item.dialect || ''}</span>
+                    </div>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2 mb-6">${item.short_description || item.description || ''}</p>
+                    <div class="flex gap-2">
+                        <button onclick="openModal('${item.id}')" class="flex-1 bg-gray-100 dark:bg-gray-700 py-3 rounded-xl font-bold text-sm hover:bg-gray-200 transition">تفاصيل</button>
+                        <button onclick="requestService('${item.id}')" class="flex-1 bg-accent text-white py-3 rounded-xl font-bold text-sm shadow-md hover:opacity-90 transition">طلب الخدمة</button>
+                    </div>
+                </div>
+            `;
+            return div;
+        }
 
-    /* ---------------------------
-       App init (mobile-first)
-       --------------------------- */
-    async function init(){
-      showSkeletons();
-      try{
-        const res = await DataLayer.loadFromCsvUrl(CONFIG.publishedCsvUrl);
-        const items = DataLayer.getAll();
+        // Modal Logic
+        function openModal(id) {
+            const item = allData.find(i => i.id === id);
+            if (!item) return;
 
-        populateFilters(DataLayer.getTypes(), DataLayer.getDialects(), DataLayer.getBadges());
-        UI.renderAll(items);
-        wireControls(items);
-        initHeroWave();
-        hideSkeletons();
-      }catch(err){
-        console.error(err);
-        hideSkeletons();
-        showLoadError();
-      }
-    }
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modalContent');
+            
+            let mediaSection = '';
+            if (item.type === 'video') {
+                mediaSection = `<div class="custom-video-container mb-6">${item.video_url.includes('iframe') ? item.video_url : `<iframe src="${item.video_url}" frameborder="0" allowfullscreen></iframe>`}</div>`;
+            } else if (item.audio_url) {
+                mediaSection = `
+                    <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-2xl mb-6">
+                        <p class="text-sm font-bold mb-3">نموذج صوتي</p>
+                        <audio controls class="w-full">
+                            <source src="${item.audio_url}" type="audio/mpeg">
+                        </audio>
+                    </div>
+                `;
+            }
 
-    function showSkeletons(){
-      const servicesGrid = $('#services-grid'); servicesGrid.innerHTML = '';
-      for(let i=0;i<3;i++) servicesGrid.appendChild(el('div',{class:'skeleton-card'}));
-      const voicesGrid = $('#voices-grid'); voicesGrid.innerHTML = '';
-      for(let i=0;i<4;i++) voicesGrid.appendChild(el('div',{class:'skeleton-card'}));
-      const videosGrid = $('#videos-grid'); videosGrid.innerHTML = '';
-      for(let i=0;i<3;i++) videosGrid.appendChild(el('div',{class:'skeleton-card'}));
-    }
-    function hideSkeletons(){ /* replaced by render */ }
-    function showLoadError(){
-      const app = document.getElementById('app');
-      const err = el('div',{class:'card center'},[
-        el('p',{},['تعذر تحميل بعض المحتويات حاليًا، يرجى المحاولة مرة أخرى.']),
-        el('div',{style:'margin-top:8px'},[
-          el('button',{class:'btn',id:'retry'},['إعادة المحاولة'])
-        ])
-      ]);
-      app.prepend(err);
-      $('#retry').addEventListener('click', () => { location.reload(); });
-    }
+            content.innerHTML = `
+                <div class="relative h-64 overflow-hidden">
+                    <img src="${item.image_url || CONFIG.DEFAULT_IMAGE}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-6 right-6 text-white">
+                        <span class="bg-accent text-white text-[10px] px-3 py-1 rounded-full uppercase font-black mb-2 inline-block tracking-widest">${item.type === 'voice' ? 'معلق صوتي' : 'فيديو إعلاني'}</span>
+                        <h2 class="text-3xl font-black">${item.name}</h2>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <div class="grid grid-cols-3 gap-4 mb-8">
+                        <div class="text-center p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
+                            <span class="block text-xs text-gray-400 mb-1">اللهجة</span>
+                            <span class="font-bold">${item.dialect || '-'}</span>
+                        </div>
+                        <div class="text-center p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
+                            <span class="block text-xs text-gray-400 mb-1">اللغة</span>
+                            <span class="font-bold">${item.language || 'العربية'}</span>
+                        </div>
+                        <div class="text-center p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
+                            <span class="block text-xs text-gray-400 mb-1">النوع</span>
+                            <span class="font-bold">${item.gender === 'female' ? 'نسائي' : 'رجالي'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h4 class="font-bold text-lg mb-3">عن الخدمة</h4>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">${item.description || 'لا يوجد وصف متاح.'}</p>
+                    </div>
 
-    function populateFilters(types, dialects, badges){
-      const typeSel = $('#filter-type');
-      const dialectSel = $('#filter-dialect');
-      const badgeSel = $('#filter-badge');
+                    ${mediaSection}
 
-      typeSel.querySelectorAll('option:not([value=""])').forEach(o=>o.remove());
-      dialectSel.querySelectorAll('option:not([value=""])').forEach(o=>o.remove());
-      badgeSel.querySelectorAll('option:not([value=""])').forEach(o=>o.remove());
+                    <button onclick="requestService('${item.id}')" class="w-full bg-accent text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-accent/20 hover:scale-[1.02] transition">
+                        اطلب هذا الصوت الآن
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
 
-      types.forEach(t => typeSel.appendChild(el('option',{value:t},[t])));
-      dialects.forEach(d => dialectSel.appendChild(el('option',{value:d},[d])));
-      badges.forEach(b => badgeSel.appendChild(el('option',{value:b},[b])));
-    }
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            if (currentAudio) currentAudio.pause();
+        }
 
-    function wireControls(allItems){
-      let debounceTimer = null;
-      $('#search').addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-          const filtered = UI.applyFiltersAndSearch(allItems);
-          UI.renderAll(filtered);
-        }, 220);
-      });
+        // WhatsApp Ordering
+        function requestService(id) {
+            const item = allData.find(i => i.id === id);
+            const text = `مرحباً أوج بلس، أرغب في طلب خدمة:
+النوع: ${item.type === 'voice' ? 'تعليق صوتي' : 'إنتاج فيديو'}
+الاسم: ${item.name}
+ID: ${item.id}
+يرجى التواصل معي للتفاصيل.`;
+            
+            const url = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
 
-      ['#filter-type','#filter-gender','#filter-dialect','#filter-badge'].forEach(sel => {
-        $(sel).addEventListener('change', () => {
-          const filtered = UI.applyFiltersAndSearch(allItems);
-          UI.renderAll(filtered);
+        // Search & Filter Logic
+        let searchTerm = '';
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value.toLowerCase();
+            renderGrid(allData);
         });
-      });
 
-      $('#clear-filters').addEventListener('click', () => {
-        $('#search').value = '';
-        $('#filter-type').value = '';
-        $('#filter-gender').value = '';
-        $('#filter-dialect').value = '';
-        $('#filter-badge').value = '';
-        UI.renderAll(allItems);
-      });
-
-      $('#modal-close').addEventListener('click', UI.closeModal);
-      $('#modal-backdrop').addEventListener('click', (e) => { if(e.target.id === 'modal-backdrop') UI.closeModal(); });
-
-      $('#order-whatsapp').addEventListener('click', () => {
-        const lines = [
-          `مرحبًا أوج بلس،`,
-          `أرغب في طلب خدمة تعليق صوتي/فيديو.`,
-          ``,
-          `أرغب بمعرفة التفاصيل والتكلفة.`,
-          ``,
-          `المرجع: ${CONFIG.siteName}`
-        ];
-        const text = encodeURIComponent(lines.join('\n'));
-        const url = `${CONFIG.whatsappBase}?phone=${encodeURIComponent(CONFIG.whatsappNumber)}&text=${text}`;
-        window.open(url, '_blank', 'noopener');
-      });
-
-      $('#bottom-order').addEventListener('click', () => $('#order-whatsapp').click());
-
-      $('#btn-browse-voices').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('voices').scrollIntoView({behavior:'smooth'}); });
-      $('#btn-watch-videos').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('videos').scrollIntoView({behavior:'smooth'}); });
-    }
-
-    /* Hero waveform (lightweight SVG animation) */
-    function initHeroWave(){
-      const container = document.getElementById('hero-wave');
-      if(!container) return;
-      const svgNS = "http://www.w3.org/2000/svg";
-      const svg = document.createElementNS(svgNS,'svg');
-      svg.setAttribute('width','100%');
-      svg.setAttribute('height','60');
-      svg.setAttribute('viewBox','0 0 320 60');
-      svg.setAttribute('preserveAspectRatio','none');
-      const path = document.createElementNS(svgNS,'path');
-      path.setAttribute('fill','none');
-      path.setAttribute('stroke','#00c2a8');
-      path.setAttribute('stroke-width','1.6');
-      path.setAttribute('stroke-linecap','round');
-      path.setAttribute('d','M0 30 Q40 10 80 30 T160 30 T240 30 T320 30');
-      svg.appendChild(path);
-      container.appendChild(svg);
-
-      let t = 0;
-      function animate(){
-        t += 0.02;
-        const amp = 6;
-        const d = [];
-        for(let x=0;x<=320;x+=20){
-          const y = 30 + Math.sin((x/20)+t) * (Math.sin(t*0.7)*amp + 2);
-          d.push((x===0? 'M':'L') + x + ' ' + y);
+        function filterContent(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-accent', 'text-white');
+                btn.classList.add('bg-gray-100', 'dark:bg-gray-800');
+            });
+            event.target.classList.add('active', 'bg-accent', 'text-white');
+            renderGrid(allData);
         }
-        path.setAttribute('d', d.join(' '));
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
-    }
 
-    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') UI.closeModal(); });
-
-    // Start
-    init();
-  </script>
+        // Start
+        loadData();
+    </script>
 </body>
 </html>
