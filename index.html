@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>أوج بلس | AWJ PLUS - منصة الإنتاج الصوتي والمرئي</title>
+    <title>أوج بلس | المنصة الاحترافية للتعليق الصوتي</title>
     
     <!-- الخطوط والجماليات -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,411 +17,457 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0A0A0A',
-                        secondary: '#141414',
-                        accent: '#C5A059', // Gold Accent
-                        accent_hover: '#A6864A',
+                        primary: '#080808',
+                        secondary: '#121212',
+                        accent: '#D4AF37', // Gold Metallic
+                        accent_light: '#F1D592',
+                        card_bg: '#1A1A1A'
                     },
                     fontFamily: { sans: ['Tajawal', 'sans-serif'] },
+                    borderRadius: { '4xl': '2rem' }
                 }
             }
         }
     </script>
 
     <style>
-        body { background-color: #0A0A0A; color: #ffffff; -webkit-tap-highlight-color: transparent; }
-        .glass { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-        .gold-gradient { background: linear-gradient(135deg, #C5A059 0%, #8E6D31 100%); }
-        .talent-card:hover .play-overlay { opacity: 1; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+        body { background-color: #080808; color: #F5F5F5; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        .glass { background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
+        .gold-text-gradient { background: linear-gradient(to bottom right, #D4AF37, #F1D592); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gold-btn { background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%); color: #000; font-weight: 800; }
         
-        /* مشغل الصوت المخصص */
-        .audio-wave { height: 3px; background: rgba(197, 160, 89, 0.2); border-radius: 2px; position: relative; cursor: pointer; }
-        .audio-progress { height: 100%; background: #C5A059; width: 0%; border-radius: 2px; }
-
-        @keyframes pulse-gold {
-            0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(197, 160, 89, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        /* Modal Animation - Mobile Bottom Sheet */
+        @media (max-width: 768px) {
+            #modal-content {
+                transform: translateY(100%);
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                max-height: 92vh;
+            }
+            #modal.active #modal-content { transform: translateY(0); }
         }
-        .btn-pulse { animation: pulse-gold 2s infinite; }
+
+        /* Desktop Modal Animation */
+        @media (min-width: 769px) {
+            #modal-content {
+                transform: scale(0.9);
+                opacity: 0;
+                transition: all 0.3s ease;
+            }
+            #modal.active #modal-content { transform: scale(1); opacity: 1; }
+        }
+
+        .talent-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .talent-card:hover { transform: translateY(-10px); border-color: rgba(212, 175, 55, 0.4); }
+        
+        .audio-progress-container { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; position: relative; cursor: pointer; overflow: hidden; }
+        .audio-progress-bar { height: 100%; background: #D4AF37; width: 0%; transition: width 0.1s linear; }
+
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     </style>
 </head>
-<body class="font-sans antialiased overflow-x-hidden custom-scrollbar">
+<body class="font-sans antialiased overflow-x-hidden">
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <!-- Header / Navbar -->
+    <nav class="fixed top-0 w-full z-[60] glass">
+        <div class="max-w-7xl mx-auto px-5 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 gold-gradient rounded-lg flex items-center justify-center shadow-lg shadow-accent/20">
-                    <span class="text-white font-black text-xl">أ</span>
+                <div class="w-11 h-11 gold-btn rounded-xl flex items-center justify-center shadow-xl shadow-accent/20">
+                    <span class="text-black font-black text-2xl">أ</span>
                 </div>
-                <h1 class="text-2xl font-black tracking-tighter">أوج <span class="text-accent font-light">بلس</span></h1>
+                <div>
+                    <h1 class="text-xl font-black leading-none">أوج بلس</h1>
+                    <span class="text-[10px] text-accent tracking-widest uppercase">AWJ PLUS PRODUCTION</span>
+                </div>
             </div>
-            <div class="flex items-center gap-4">
-                <a href="https://wa.me/966539167059" target="_blank" class="hidden md:flex items-center gap-2 bg-accent hover:bg-accent_hover text-black px-6 py-2.5 rounded-full font-bold transition-all text-sm">
-                    <i data-lucide="phone-call" class="w-4 h-4"></i>
-                    اطلب خدمتك الآن
-                </a>
-                <button class="md:hidden text-white"><i data-lucide="menu"></i></button>
+            <div class="hidden md:flex items-center gap-8 text-sm font-bold text-gray-400">
+                <a href="#talents" class="hover:text-accent transition">المعلقين</a>
+                <a href="#videos" class="hover:text-accent transition">الأعمال الإعلانية</a>
+                <a href="#contact" class="hover:text-accent transition">تواصل معنا</a>
             </div>
+            <a href="https://wa.me/966539167059" target="_blank" class="gold-btn px-6 py-2.5 rounded-full text-sm shadow-lg hover:scale-105 transition-all">
+                ابدأ مشروعك
+            </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative pt-40 pb-24 px-6 overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-10 pointer-events-none">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent via-transparent to-transparent"></div>
-        </div>
+    <section class="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#1a1500_0%,_#080808_100%)]"></div>
         
-        <div class="max-w-4xl mx-auto text-center relative z-10">
-            <span class="inline-block py-1 px-4 rounded-full border border-accent/30 text-accent text-sm mb-6 bg-accent/5">وكالة إنتاج إعلاني متكاملة</span>
-            <h2 id="hero-title" class="text-5xl md:text-7xl font-black mb-8 leading-tight">صوتك يبدأ من <span class="text-accent">أوج بلس</span></h2>
-            <p id="hero-desc" class="text-gray-400 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
-                نخبة من المعلقين الصوتيين وأحدث تقنيات الإنتاج المرئي لنضع علامتك التجارية في القمة.
-            </p>
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 py-2 px-4 rounded-full glass mb-8 animate-bounce">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inset-0 rounded-full bg-accent opacity-75"></span>
+                  <span class="relative rounded-full h-2 w-2 bg-accent"></span>
+                </span>
+                <span class="text-xs font-bold text-gray-300">أكبر منصة معلقين صوتيين في المملكة</span>
+            </div>
             
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
-                <a href="#talents" class="w-full sm:w-auto px-10 py-4 gold-gradient text-black font-black rounded-2xl hover:scale-105 transition-transform flex items-center justify-center gap-2 btn-pulse">
-                    <i data-lucide="mic-2"></i> استكشف الأصوات
+            <h2 id="hero-title" class="text-5xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tight">
+                نصنع للصوت <span class="gold-text-gradient">أوجاً</span> <br> وللإعلان <span class="gold-text-gradient">بصمة</span>
+            </h2>
+            
+            <p id="hero-desc" class="text-gray-400 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto font-medium">
+                اكتشف مكتبة الأصوات الإحترافية، وشاهد أعمالنا السينمائية التي غيرت مفهوم الإعلان.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#talents" class="w-full sm:w-auto px-10 py-5 gold-btn rounded-2xl text-lg flex items-center justify-center gap-2 hover:shadow-accent/40 shadow-2xl transition-all">
+                    <i data-lucide="mic"></i> استعرض المعلقين
                 </a>
-                <a href="#videos" class="w-full sm:w-auto px-10 py-4 glass text-white font-bold rounded-2xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="play-circle"></i> أعمالنا الإعلانية
+                <a href="#videos" class="w-full sm:w-auto px-10 py-5 glass rounded-2xl text-lg font-bold flex items-center justify-center gap-2 hover:bg-white/5 transition-all">
+                    <i data-lucide="play"></i> معرض الأعمال
                 </a>
             </div>
         </div>
-    </header>
 
-    <!-- Content Sections -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20 hidden md:block">
+            <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center p-1">
+                <div class="w-1 h-2 bg-white rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-6 space-y-32 pb-32">
 
-        <!-- Search & Filter Bar -->
-        <section id="talents" class="space-y-10">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <!-- Voice Talents Section -->
+        <section id="talents" class="scroll-mt-32">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
                 <div>
-                    <h3 class="text-3xl font-black mb-2">الأصوات الإحترافية</h3>
-                    <p class="text-gray-500">اختر الصوت الذي يمثل هويتك من بين نخبة المعلقين</p>
+                    <h3 class="text-4xl font-black mb-4">الأصوات <span class="text-accent">الإحترافية</span></h3>
+                    <p class="text-gray-500 font-medium">نخبة من فناني التعليق الصوتي بمختلف اللهجات والأساليب.</p>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                    <div class="relative group">
-                        <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-accent transition-colors"></i>
-                        <input type="text" id="voiceSearch" placeholder="ابحث باسم المعلق أو اللهجة..." 
-                               class="w-full sm:w-72 bg-secondary border border-white/10 rounded-xl py-3 pr-12 pl-4 focus:border-accent outline-none transition-all">
-                    </div>
+                
+                <div class="relative w-full md:w-96">
+                    <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors"></i>
+                    <input type="text" id="voiceSearch" placeholder="ابحث عن معلق، لهجة، أو تخصص..." 
+                           class="w-full bg-secondary border border-white/5 rounded-2xl py-4 pr-12 pl-6 focus:border-accent outline-none transition-all shadow-2xl">
                 </div>
             </div>
 
-            <!-- Voice Talents Grid -->
             <div id="talents-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Skeleton Loading -->
-                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
-                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
-                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
-                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
+                <div class="h-[450px] bg-secondary rounded-[2.5rem] animate-pulse border border-white/5"></div>
+                <div class="h-[450px] bg-secondary rounded-[2.5rem] animate-pulse border border-white/5"></div>
+                <div class="h-[450px] bg-secondary rounded-[2.5rem] animate-pulse border border-white/5"></div>
+                <div class="h-[450px] bg-secondary rounded-[2.5rem] animate-pulse border border-white/5"></div>
             </div>
         </section>
 
-        <!-- Video Portfolio -->
-        <section id="videos" class="space-y-10">
-            <div class="text-center">
-                <h3 class="text-3xl font-black mb-2">الإنتاج المرئي</h3>
-                <p class="text-gray-500">فيديوهات إعلانية سينمائية تخطف الأنظار</p>
+        <!-- Videos Section -->
+        <section id="videos" class="scroll-mt-32">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl font-black mb-4 text-white">الإنتاج <span class="text-accent">الإعلاني</span></h3>
+                <p class="text-gray-500 max-w-xl mx-auto">عندما تتحول الفكرة إلى لوحة فنية إعلانية تخاطب الحواس.</p>
             </div>
-
-            <div id="videos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Videos will be injected here -->
-            </div>
+            <div id="videos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-secondary border-t border-white/5 pt-20 pb-10">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-                <div class="col-span-1 md:col-span-2 space-y-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 gold-gradient rounded flex items-center justify-center font-bold text-black text-xs">أ</div>
-                        <span class="text-xl font-black">أوج بلس</span>
-                    </div>
-                    <p id="footer-desc" class="text-gray-500 max-w-sm leading-relaxed"></p>
-                    <div class="flex items-center gap-4">
-                        <a id="tiktok-link" href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-accent transition-all"><i data-lucide="music-2" class="w-5 h-5"></i></a>
-                        <a id="youtube-link" href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-accent transition-all"><i data-lucide="youtube" class="w-5 h-5"></i></a>
-                        <a id="email-link" href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-accent transition-all"><i data-lucide="mail" class="w-5 h-5"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-6">المنصة</h4>
-                    <ul class="space-y-4 text-gray-500 text-sm">
-                        <li><a href="#talents" class="hover:text-accent transition">المعلقين الصوتيين</a></li>
-                        <li><a href="#videos" class="hover:text-accent transition">الفيديوهات الإعلانية</a></li>
-                        <li><a href="#" class="hover:text-accent transition">انضم كمعلق</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-6">الدعم</h4>
-                    <ul class="space-y-4 text-gray-500 text-sm">
-                        <li>تواصل معنا: <span id="site-whatsapp" class="text-white"></span></li>
-                        <li>المقر: المملكة العربية السعودية</li>
-                    </ul>
+    <!-- Professional Popup / Modal -->
+    <div id="modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-0 md:p-6 overflow-hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl transition-opacity duration-300" onclick="closeModal()"></div>
+        
+        <div id="modal-content" class="relative bg-card_bg w-full max-w-5xl md:rounded-[3rem] overflow-hidden flex flex-col md:flex-row shadow-[0_0_100px_rgba(212,175,55,0.15)] z-10 border border-white/10">
+            
+            <!-- Modal Sidebar/Image -->
+            <div class="w-full md:w-2/5 relative h-72 md:h-auto overflow-hidden">
+                <img id="modal-img" src="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-card_bg via-card_bg/20 to-transparent"></div>
+                <div class="absolute bottom-6 right-6">
+                    <span id="modal-dialect-badge" class="px-4 py-1.5 glass rounded-full text-accent font-bold text-xs uppercase tracking-widest"></span>
                 </div>
             </div>
-            <div class="pt-10 border-t border-white/5 text-center text-gray-600 text-xs">
-                &copy; 2024 أوج بلس - جميع الحقوق محفوظة. تم التطوير بأعلى معايير الجودة.
-            </div>
-        </div>
-    </footer>
 
-    <!-- Talent Details Modal -->
-    <div id="modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4 overflow-y-auto pt-10 pb-10">
-        <div class="fixed inset-0 bg-black/90 backdrop-blur-md transition-opacity"></div>
-        <div class="relative bg-secondary border border-white/10 w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-2xl z-10 transition-all scale-95 opacity-0 duration-300" id="modal-content">
-            <button onclick="closeModal()" class="absolute top-6 left-6 w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all z-20"><i data-lucide="x"></i></button>
-            <div class="flex flex-col md:flex-row h-full">
-                <div class="w-full md:w-2/5 relative h-80 md:h-auto">
-                    <img id="modal-img" src="" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent md:bg-gradient-to-l"></div>
-                </div>
-                <div class="w-full md:w-3/5 p-8 md:p-12 space-y-8 max-h-[70vh] overflow-y-auto custom-scrollbar">
-                    <div>
-                        <h2 id="modal-name" class="text-4xl font-black mb-2"></h2>
-                        <p id="modal-title" class="text-accent font-bold"></p>
+            <!-- Modal Body -->
+            <div class="w-full md:w-3/5 p-8 md:p-14 flex flex-col justify-between max-h-[70vh] md:max-h-none overflow-y-auto custom-scrollbar">
+                <div class="space-y-8">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 id="modal-name" class="text-4xl md:text-5xl font-black mb-3"></h2>
+                            <p id="modal-title" class="text-accent font-bold text-lg"></p>
+                        </div>
+                        <div id="modal-price" class="text-left">
+                            <span class="block text-[10px] text-gray-500 uppercase font-bold tracking-tighter">السعر التقديري</span>
+                            <span class="text-xl font-black text-white"></span>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap gap-2" id="modal-badges"></div>
+
+                    <div id="modal-badges" class="flex flex-wrap gap-2"></div>
+
                     <div class="space-y-4">
-                        <h4 class="font-bold flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-accent"></i> نبذة تعريفية</h4>
-                        <p id="modal-bio" class="text-gray-400 leading-relaxed text-sm"></p>
+                        <h4 class="text-sm font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <i data-lucide="align-right" class="w-4 h-4"></i> عن المعلق
+                        </h4>
+                        <p id="modal-bio" class="text-gray-300 leading-relaxed text-base font-medium"></p>
                     </div>
+
                     <div class="space-y-6">
-                        <h4 class="font-bold flex items-center gap-2"><i data-lucide="play-circle" class="w-4 h-4 text-accent"></i> النماذج الصوتية</h4>
+                        <h4 class="text-sm font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <i data-lucide="volume-2" class="w-4 h-4"></i> النماذج الصوتية
+                        </h4>
                         <div id="modal-samples" class="space-y-4"></div>
                     </div>
-                    <a id="modal-whatsapp" href="#" target="_blank" class="block w-full py-5 gold-gradient text-black text-center font-black rounded-2xl shadow-xl shadow-accent/10 hover:scale-[1.02] transition-all">
+                </div>
+
+                <div class="pt-10 mt-10 border-t border-white/5 flex flex-col sm:flex-row gap-4">
+                    <button id="modal-order-btn" class="flex-1 py-5 gold-btn rounded-2xl flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all">
+                        <i data-lucide="message-circle" class="w-6 h-6"></i>
                         اطلب هذا الصوت الآن
-                    </a>
+                    </button>
+                    <button onclick="closeModal()" class="sm:w-20 py-5 glass rounded-2xl flex items-center justify-center text-white hover:bg-white/5 transition-all">
+                        إغلاق
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript Platform Logic -->
+    <!-- Footer -->
+    <footer id="contact" class="bg-secondary border-t border-white/5 pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
+                <div class="col-span-1 md:col-span-2 space-y-8">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 gold-btn rounded-xl flex items-center justify-center font-black text-black text-2xl">أ</div>
+                        <span class="text-3xl font-black tracking-tighter">أوج بلس</span>
+                    </div>
+                    <p id="footer-desc" class="text-gray-400 max-w-md leading-relaxed font-medium text-lg"></p>
+                    <div class="flex items-center gap-5">
+                        <a id="tiktok-link" href="#" target="_blank" class="w-12 h-12 rounded-full glass flex items-center justify-center hover:text-accent hover:border-accent/50 transition-all"><i data-lucide="music-2"></i></a>
+                        <a id="youtube-link" href="#" target="_blank" class="w-12 h-12 rounded-full glass flex items-center justify-center hover:text-accent hover:border-accent/50 transition-all"><i data-lucide="youtube"></i></a>
+                        <a id="email-link" href="#" class="w-12 h-12 rounded-full glass flex items-center justify-center hover:text-accent hover:border-accent/50 transition-all"><i data-lucide="mail"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-black text-white mb-8 text-xl">الخدمات</h4>
+                    <ul class="space-y-4 text-gray-500 font-bold">
+                        <li><a href="#" class="hover:text-accent transition">التعليق الصوتي</a></li>
+                        <li><a href="#" class="hover:text-accent transition">الفيديوهات الإعلانية</a></li>
+                        <li><a href="#" class="hover:text-accent transition">الهوية الصوتية</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-black text-white mb-8 text-xl">تواصل مباشر</h4>
+                    <div class="glass p-6 rounded-3xl space-y-4">
+                        <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">واتساب الإدارة</p>
+                        <a id="site-whatsapp-footer" href="#" class="text-xl font-black text-white block hover:text-accent transition"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-12 border-t border-white/5 text-gray-600 text-sm font-medium">
+                &copy; 2024 أوج بلس للإنتاج الإعلامي. كل الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic -->
     <script>
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6RyvMd9y1fkqkByBmwnvUlnvG2GecjY4BQgm5Tiu-oxe0mcoWa704KhYTunUqYUlBunO4cKqb_iiQ/pub?output=csv';
 
-        let SITE_DATA = { talents: [], samples: [], videos: [], config: {} };
+        let PLATFORM_DATA = { talents: [], samples: [], videos: [], config: {} };
+        let currentAudio = null;
+        let activePlayerBtn = null;
 
-        // 1. Fetch & Parse Data
-        async function initPlatform() {
+        async function init() {
             try {
-                const response = await fetch(CSV_URL);
-                const data = await response.text();
-                
-                // Parse CSV with PapaParse
-                const parsed = Papa.parse(data, { header: true, skipEmptyLines: true }).data;
-                
-                // Segment data based on 'id' patterns
-                SITE_DATA.talents = parsed.filter(r => r.id && r.id.startsWith('voice-'));
-                SITE_DATA.samples = parsed.filter(r => r.id && r.id.startsWith('sample-'));
-                SITE_DATA.videos = parsed.filter(r => r.id && r.id.startsWith('video-'));
-                
-                // Config mapping
-                parsed.filter(r => r.key).forEach(r => SITE_DATA.config[r.key] = r.value);
+                const res = await fetch(CSV_URL);
+                const text = await res.text();
+                const data = Papa.parse(text, { header: true, skipEmptyLines: true }).data;
 
-                applyConfig();
+                PLATFORM_DATA.talents = data.filter(r => r.id?.startsWith('voice-'));
+                PLATFORM_DATA.samples = data.filter(r => r.id?.startsWith('sample-'));
+                PLATFORM_DATA.videos = data.filter(r => r.id?.startsWith('video-'));
+                data.filter(r => r.key).forEach(r => PLATFORM_DATA.config[r.key] = r.value);
+
+                setupSite();
                 renderTalents();
                 renderVideos();
                 lucide.createIcons();
-            } catch (err) {
-                console.error("Platform Init Error:", err);
-            }
+            } catch (err) { console.error("Error:", err); }
         }
 
-        // 2. Apply Site Configuration
-        function applyConfig() {
-            const conf = SITE_DATA.config;
-            if(conf.hero_title) document.getElementById('hero-title').innerText = conf.hero_title;
-            if(conf.hero_description) document.getElementById('hero-desc').innerText = conf.hero_description;
-            if(conf.footer_description) document.getElementById('footer-desc').innerText = conf.footer_description;
-            if(conf.whatsapp) document.getElementById('site-whatsapp').innerText = "+" + conf.whatsapp;
-            if(conf.tiktok) document.getElementById('tiktok-link').href = conf.tiktok;
-            if(conf.youtube) document.getElementById('youtube-link').href = conf.youtube;
-            if(conf.email) document.getElementById('email-link').href = "mailto:" + conf.email;
+        function setupSite() {
+            const c = PLATFORM_DATA.config;
+            document.getElementById('hero-title').innerText = c.hero_title || 'أوج بلس';
+            document.getElementById('hero-desc').innerText = c.hero_description || '';
+            document.getElementById('footer-desc').innerText = c.footer_description || '';
+            document.getElementById('site-whatsapp-footer').innerText = "+" + c.whatsapp;
+            document.getElementById('site-whatsapp-footer').href = "https://wa.me/" + c.whatsapp;
+            document.getElementById('tiktok-link').href = c.tiktok;
+            document.getElementById('youtube-link').href = c.youtube;
+            document.getElementById('email-link').href = "mailto:" + c.email;
         }
 
-        // 3. Render Voice Talents
-        function renderTalents(filterText = '') {
+        function renderTalents(query = '') {
             const container = document.getElementById('talents-container');
             container.innerHTML = '';
-
-            const filtered = SITE_DATA.talents.filter(t => 
-                t.name.includes(filterText) || t.dialect.includes(filterText) || t.description.includes(filterText)
+            
+            const filtered = PLATFORM_DATA.talents.filter(t => 
+                t.name.includes(query) || t.dialect.includes(query) || t.description.includes(query)
             );
 
             filtered.forEach(talent => {
-                const card = document.createElement('div');
-                card.className = "talent-card group relative bg-secondary border border-white/5 rounded-3xl overflow-hidden hover:border-accent/30 transition-all cursor-pointer";
-                card.onclick = () => openTalentModal(talent.id);
+                const div = document.createElement('div');
+                div.className = "talent-card bg-secondary border border-white/5 rounded-[2.5rem] overflow-hidden cursor-pointer group";
+                div.onclick = () => openTalent(talent.id);
                 
-                card.innerHTML = `
-                    <div class="relative h-72 overflow-hidden">
-                        <img src="${talent.avatar_url}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/20 to-transparent"></div>
-                        <div class="absolute top-4 right-4 bg-accent/90 text-black text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-tighter">
-                            ${talent.dialect}
+                div.innerHTML = `
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="${talent.avatar_url}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 right-4 flex gap-2">
+                            <span class="px-3 py-1 glass rounded-full text-[10px] font-bold text-accent">${talent.dialect}</span>
                         </div>
                     </div>
-                    <div class="p-6 relative">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="text-xl font-black group-hover:text-accent transition-colors">${talent.name}</h4>
-                                <p class="text-xs text-gray-500">${talent.title}</p>
-                            </div>
-                            <div class="w-10 h-10 glass rounded-full flex items-center justify-center text-accent group-hover:gold-gradient group-hover:text-black transition-all">
-                                <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                    <div class="p-6">
+                        <h4 class="text-xl font-black group-hover:text-accent transition-colors">${talent.name}</h4>
+                        <p class="text-gray-500 text-xs font-bold mt-1 line-clamp-1">${talent.title}</p>
+                        <div class="mt-6 flex items-center justify-between">
+                            <span class="text-sm font-black text-gray-300">${talent.price_hint || ''}</span>
+                            <div class="w-10 h-10 gold-btn rounded-full flex items-center justify-center shadow-lg">
+                                <i data-lucide="chevron-left" class="w-5 h-5"></i>
                             </div>
                         </div>
                     </div>
                 `;
-                container.appendChild(card);
+                container.appendChild(div);
             });
             lucide.createIcons();
         }
 
-        // 4. Render Videos
         function renderVideos() {
             const container = document.getElementById('videos-container');
             container.innerHTML = '';
-            
-            SITE_DATA.videos.forEach(vid => {
-                const card = document.createElement('div');
-                card.className = "glass rounded-3xl overflow-hidden group";
-                card.innerHTML = `
-                    <div class="relative aspect-video">
-                        <img src="${vid.thumbnail_url}" class="w-full h-full object-cover">
+            PLATFORM_DATA.videos.forEach(v => {
+                const div = document.createElement('div');
+                div.className = "glass rounded-4xl overflow-hidden group border border-white/5";
+                div.innerHTML = `
+                    <div class="relative aspect-video overflow-hidden cursor-pointer" onclick="window.open('${v.video_url}', '_blank')">
+                        <img src="${v.thumbnail_url}" class="w-full h-full object-cover group-hover:scale-110 transition-duration-700">
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                            <button onclick="playVideo('${vid.video_url}')" class="w-16 h-16 gold-gradient rounded-full flex items-center justify-center text-black shadow-2xl">
-                                <i data-lucide="play" class="w-8 h-8 fill-current"></i>
-                            </button>
+                            <div class="w-16 h-16 gold-btn rounded-full flex items-center justify-center shadow-2xl"><i data-lucide="play" class="w-8 h-8 fill-current"></i></div>
                         </div>
-                        <div class="absolute bottom-4 left-4 text-[10px] glass px-2 py-1 rounded">${vid.duration}</div>
+                        <div class="absolute bottom-4 left-4 glass px-3 py-1 rounded-full text-[10px] font-bold text-white">${v.duration}</div>
                     </div>
-                    <div class="p-5">
-                        <h4 class="font-bold mb-2">${vid.title}</h4>
-                        <p class="text-xs text-gray-500 line-clamp-2">${vid.description}</p>
+                    <div class="p-6">
+                        <span class="text-accent text-[10px] font-black uppercase tracking-widest">${v.category}</span>
+                        <h4 class="text-xl font-black mt-2 mb-2">${v.title}</h4>
+                        <p class="text-gray-500 text-xs font-medium leading-relaxed">${v.description}</p>
                     </div>
                 `;
-                container.appendChild(card);
+                container.appendChild(div);
             });
+            lucide.createIcons();
         }
 
-        // 5. Talent Modal Logic
-        let currentAudio = null;
-
-        function openTalentModal(id) {
-            const talent = SITE_DATA.talents.find(t => t.id === id);
-            const samples = SITE_DATA.samples.filter(s => s.talent_id === id);
+        // Modal Controls
+        function openTalent(id) {
+            const talent = PLATFORM_DATA.talents.find(t => t.id === id);
+            const samples = PLATFORM_DATA.samples.filter(s => s.talent_id === id);
             
             document.getElementById('modal-img').src = talent.avatar_url;
+            document.getElementById('modal-dialect-badge').innerText = talent.dialect;
             document.getElementById('modal-name').innerText = talent.name;
             document.getElementById('modal-title').innerText = talent.title;
             document.getElementById('modal-bio').innerText = talent.bio || talent.description;
+            document.querySelector('#modal-price span:last-child').innerText = talent.price_hint || 'حسب الاتفاق';
             
-            // Badges
-            const badgeContainer = document.getElementById('modal-badges');
-            badgeContainer.innerHTML = '';
+            const badgesWrap = document.getElementById('modal-badges');
+            badgesWrap.innerHTML = '';
             talent.badges.split('|').forEach(b => {
-                badgeContainer.innerHTML += `<span class="text-[10px] px-3 py-1 glass rounded-full text-gray-300 border border-white/5">${b}</span>`;
+                badgesWrap.innerHTML += `<span class="px-3 py-1 glass rounded-full text-[10px] font-bold text-gray-400 border border-white/10">${b}</span>`;
             });
 
-            // Samples
-            const sampleContainer = document.getElementById('modal-samples');
-            sampleContainer.innerHTML = '';
+            const samplesWrap = document.getElementById('modal-samples');
+            samplesWrap.innerHTML = '';
             samples.forEach(s => {
-                const sampleRow = document.createElement('div');
-                sampleRow.className = "p-4 glass rounded-2xl flex items-center gap-4 group";
-                sampleRow.innerHTML = `
-                    <button onclick="toggleAudio('${s.audio_url}', this)" class="w-12 h-12 rounded-full border border-accent/20 flex items-center justify-center text-accent hover:gold-gradient hover:text-black transition-all">
-                        <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+                const row = document.createElement('div');
+                row.className = "flex items-center gap-4 glass p-4 rounded-2xl group border border-white/5 hover:border-accent/20 transition-all";
+                row.innerHTML = `
+                    <button onclick="handleAudio('${s.audio_url}', this)" class="w-14 h-14 rounded-full border-2 border-accent/20 flex items-center justify-center text-accent hover:gold-btn hover:text-black transition-all">
+                        <i data-lucide="play" class="w-6 h-6 fill-current"></i>
                     </button>
                     <div class="flex-1">
-                        <p class="text-sm font-bold">${s.title}</p>
-                        <p class="text-[10px] text-gray-500">${s.type} • ${s.duration}</p>
-                        <div class="audio-wave mt-2"><div class="audio-progress"></div></div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h5 class="text-sm font-black text-white">${s.title}</h5>
+                            <span class="text-[10px] font-bold text-gray-500">${s.duration}</span>
+                        </div>
+                        <div class="audio-progress-container">
+                            <div class="audio-progress-bar"></div>
+                        </div>
                     </div>
                 `;
-                sampleContainer.appendChild(sampleRow);
+                samplesWrap.appendChild(row);
             });
 
-            // WhatsApp link
-            const msg = encodeURIComponent(talent.whatsapp_message || `مرحباً أوج بلس، أرغب بطلب تعليق صوتي من ${talent.name}`);
-            document.getElementById('modal-whatsapp').href = `https://wa.me/${SITE_DATA.config.whatsapp}?text=${msg}`;
+            document.getElementById('modal-order-btn').onclick = () => {
+                const msg = `السلام عليكم أوج بلس، أرغب في طلب خدمة تعليق صوتي:
+- المعلق: ${talent.name}
+- اللهجة: ${talent.dialect}
+- الخدمة: ${talent.title}
+- السعر التقريبي: ${talent.price_hint}
+يرجى التواصل معي للتفاصيل.`;
+                window.open(`https://wa.me/${PLATFORM_DATA.config.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+            };
 
-            // Show Modal
-            const m = document.getElementById('modal');
-            m.classList.replace('hidden', 'flex');
-            setTimeout(() => {
-                document.getElementById('modal-content').classList.replace('scale-95', 'scale-100');
-                document.getElementById('modal-content').classList.replace('opacity-0', 'opacity-100');
-            }, 10);
+            const modal = document.getElementById('modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden';
             lucide.createIcons();
         }
 
         function closeModal() {
-            if(currentAudio) { currentAudio.pause(); currentAudio = null; }
-            const m = document.getElementById('modal');
-            document.getElementById('modal-content').classList.replace('scale-100', 'scale-95');
-            document.getElementById('modal-content').classList.replace('opacity-100', 'opacity-0');
-            setTimeout(() => m.classList.replace('flex', 'hidden'), 300);
+            if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.classList.add('hidden'), 400);
+            document.body.style.overflow = '';
         }
 
-        // 6. Audio Player Logic
-        function toggleAudio(url, btn) {
-            const icon = btn.querySelector('i');
-            const progress = btn.parentElement.querySelector('.audio-progress');
-
+        function handleAudio(url, btn) {
+            const bar = btn.parentElement.querySelector('.audio-progress-bar');
+            
             if (currentAudio && currentAudio.src === url) {
                 if (currentAudio.paused) {
                     currentAudio.play();
-                    btn.classList.add('gold-gradient', 'text-black');
+                    btn.innerHTML = '<i data-lucide="pause" class="w-6 h-6 fill-current"></i>';
                 } else {
                     currentAudio.pause();
-                    btn.classList.remove('gold-gradient', 'text-black');
+                    btn.innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
                 }
             } else {
                 if (currentAudio) {
                     currentAudio.pause();
-                    document.querySelectorAll('.audio-progress').forEach(p => p.style.width = '0%');
-                    document.querySelectorAll('#modal-samples button').forEach(b => b.classList.remove('gold-gradient', 'text-black'));
+                    activePlayerBtn.innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
+                    document.querySelectorAll('.audio-progress-bar').forEach(b => b.style.width = '0%');
                 }
                 currentAudio = new Audio(url);
                 currentAudio.play();
-                btn.classList.add('gold-gradient', 'text-black');
+                activePlayerBtn = btn;
+                btn.innerHTML = '<i data-lucide="pause" class="w-6 h-6 fill-current"></i>';
 
                 currentAudio.ontimeupdate = () => {
-                    const pct = (currentAudio.currentTime / currentAudio.duration) * 100;
-                    progress.style.width = pct + '%';
+                    const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                    bar.style.width = progress + '%';
                 };
                 
                 currentAudio.onended = () => {
-                    btn.classList.remove('gold-gradient', 'text-black');
-                    progress.style.width = '0%';
+                    btn.innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
+                    bar.style.width = '0%';
                 };
             }
             lucide.createIcons();
         }
 
-        // 7. Video Player (Simple Window for Demo)
-        function playVideo(url) {
-            window.open(url, '_blank');
-        }
+        document.getElementById('voiceSearch').addEventListener('input', (e) => renderTalents(e.target.value));
 
-        // 8. Search Event
-        document.getElementById('voiceSearch').oninput = (e) => renderTalents(e.target.value);
-
-        // Start Platform
-        initPlatform();
+        init();
     </script>
 </body>
 </html>
