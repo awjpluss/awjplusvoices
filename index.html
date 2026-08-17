@@ -2,36 +2,47 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>أوج بلس — تعليق صوتي احترافي وفيديوهات إعلانية</title>
   <meta name="description" content="أوج بلس — نخبة من المعلقين والمعلقات الصوتية وفريق متخصص في إنتاج الفيديوهات الإعلانية والمحتوى الإبداعي." />
   <meta property="og:title" content="أوج بلس — تعليق صوتي احترافي وفيديوهات إعلانية" />
   <meta property="og:description" content="نخبة من المعلقين والمعلقات الصوتية وفريق متخصص في إنتاج الفيديوهات الإعلانية والمحتوى الإبداعي." />
-  <meta property="og:type" content="website" />
-  <meta name="keywords" content="التعليق الصوتي,معلق صوتي,معلقة صوتية,الفيديوهات الإعلانية,أوج بلس" />
-  <link rel="canonical" href="https://awjplusvoices.vercel.app/" />
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="theme-color" content="#071827" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- External libs (CDN) -->
+  <!-- External libs (lazy loaded where possible) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-normalize/modern-normalize.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://unpkg.com/wavesurfer.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script defer src="https://unpkg.com/wavesurfer.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.min.js"></script>
 
   <style>
+    /* ===========================
+       Mobile-first Fluid Design
+       =========================== */
     :root{
       --bg:#071021;
       --card:#0f1724;
       --muted:#9aa6b2;
       --accent:#00c2a8;
       --glass: rgba(255,255,255,0.04);
-      --glass-2: rgba(255,255,255,0.02);
       --glass-border: rgba(255,255,255,0.06);
       --radius:14px;
       --max-width:1100px;
+      --touch-min:44px;
+      --gap:clamp(8px, 2.2vw, 18px);
+      --pad:clamp(12px, 3vw, 22px);
       --font-sans: "Noto Sans Arabic", "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+      --card-elev: 0 8px 24px rgba(2,6,23,0.6);
     }
+
+    /* Respect user reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+
     html,body{height:100%}
     body{
       margin:0;
@@ -41,84 +52,111 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       line-height:1.45;
-      padding:20px;
+      padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
       box-sizing:border-box;
       display:flex;
       justify-content:center;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
+
     .app{
       width:100%;
       max-width:var(--max-width);
+      padding:0 clamp(12px,4vw,28px);
+      box-sizing:border-box;
     }
 
-    /* Header / Hero */
+    /* Fluid typography */
+    h1,h2,h3,h4{line-height:1.15}
+    h1{font-size:clamp(18px,4.6vw,22px);margin:0}
+    h2{font-size:clamp(18px,4.2vw,20px);margin:0}
+    h3{font-size:clamp(15px,3.8vw,18px);margin:0}
+    h4{font-size:clamp(14px,3.6vw,16px);margin:0}
+
+    p{margin:0;color:var(--muted);font-size:clamp(13px,3.2vw,14px)}
+
+    /* Header */
     header{
       display:flex;
-      gap:16px;
+      gap:var(--gap);
       align-items:center;
       justify-content:space-between;
-      margin-bottom:18px;
+      margin:var(--gap) 0;
+      padding:calc(var(--pad) / 2) 0;
     }
-    .brand{
-      display:flex;
-      gap:12px;
-      align-items:center;
-    }
+    .brand{display:flex;gap:12px;align-items:center}
     .logo{
-      width:56px;height:56px;border-radius:12px;
+      width:48px;height:48px;border-radius:12px;
       background:linear-gradient(135deg,#06202b,#0b2b3a);
       display:flex;align-items:center;justify-content:center;
-      box-shadow:0 6px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      box-shadow:var(--card-elev);
       border:1px solid var(--glass-border);
-      font-weight:700;font-size:20px;color:var(--accent);
+      font-weight:700;font-size:18px;color:var(--accent);
+      flex-shrink:0;
     }
-    .brand h1{margin:0;font-size:18px}
-    .brand p{margin:0;color:var(--muted);font-size:13px}
+    nav{display:flex;gap:8px;align-items:center}
 
-    nav{display:flex;gap:10px;align-items:center}
+    /* Buttons - touch-first */
     .btn{
       background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
       border:1px solid var(--glass-border);
       color:var(--accent);
-      padding:10px 14px;border-radius:12px;font-weight:600;
+      padding:12px 14px;border-radius:12px;font-weight:700;
       text-decoration:none;font-size:14px;
       display:inline-flex;gap:8px;align-items:center;
+      min-height:var(--touch-min);min-width:48px;
+      justify-content:center;
+      -webkit-user-select:none;user-select:none;
     }
     .btn.secondary{color:#cfeff0;border-color:transparent;background:transparent}
-    .sticky-cta{position:sticky;top:18px}
+    .small-btn{
+      padding:10px 12px;border-radius:10px;border:1px solid var(--glass-border);
+      background:transparent;color:#cfeff0;font-weight:700;font-size:14px;min-height:var(--touch-min);
+    }
 
     /* Hero */
     .hero{
       background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:18px;padding:18px;border:1px solid var(--glass-border);
-      display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px;
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      border-radius:16px;padding:var(--pad);border:1px solid var(--glass-border);
+      display:flex;gap:var(--gap);align-items:center;flex-wrap:wrap;margin-bottom:var(--gap);
+      box-shadow: var(--card-elev);
     }
-    .hero-left{flex:1;min-width:220px}
-    .hero h2{margin:0;font-size:22px}
-    .hero p{color:var(--muted);margin-top:8px}
-    .hero-actions{display:flex;gap:10px;margin-top:12px}
-    .wave-wrap{width:320px;height:80px;border-radius:12px;background:linear-gradient(180deg,var(--glass),var(--glass-2));display:flex;align-items:center;justify-content:center;padding:10px;border:1px solid var(--glass-border)}
-    .wave-canvas{width:100%;height:60px}
+    .hero-left{flex:1;min-width:160px}
+    .hero p{margin-top:8px}
+    .hero-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+    .wave-wrap{
+      width:100%;
+      max-width:360px;
+      height:72px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+      display:flex;align-items:center;justify-content:center;padding:8px;border:1px solid var(--glass-border);
+      box-sizing:border-box;
+    }
+    .wave-canvas{width:100%;height:56px}
 
     /* Sections */
-    section{margin-bottom:18px}
-    .section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    section{margin-bottom:var(--gap)}
+    .section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
     .section-title h3{margin:0;font-size:16px}
     .grid{
       display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    @media(min-width:600px){
+      .grid{grid-template-columns:repeat(2,1fr)}
     }
     @media(min-width:900px){
       .grid{grid-template-columns:repeat(3,1fr)}
     }
+
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;padding:12px;border:1px solid var(--glass-border);
-      display:flex;gap:12px;align-items:flex-start;
+      border-radius:12px;padding:12px;border:1px solid var(--glass-border);
+      display:flex;gap:12px;align-items:flex-start;box-shadow:0 6px 18px rgba(0,0,0,0.45);
     }
-    .avatar{width:84px;height:84px;border-radius:10px;background:#0b1722;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .avatar{width:72px;height:72px;border-radius:10px;background:#0b1722;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
     .avatar img{width:100%;height:100%;object-fit:cover;display:block}
     .meta{flex:1}
     .meta h4{margin:0 0 6px 0}
@@ -126,42 +164,71 @@
     .badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
     .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px;color:#dff7f0;border:1px solid rgba(255,255,255,0.03)}
 
-    .card-actions{display:flex;gap:8px;margin-top:10px}
-    .small-btn{padding:8px 10px;border-radius:10px;border:1px solid var(--glass-border);background:transparent;color:#cfeff0;font-weight:600;font-size:13px}
+    .card-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 
-    /* Players */
-    .player{margin-top:8px}
+    /* Player */
+    .player{margin-top:8px;width:100%}
     .audio-controls{display:flex;gap:8px;align-items:center}
     .progress{flex:1;height:6px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden}
     .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#00f0d0);width:0%}
 
-    /* Filters & Search */
+    /* Filters & Search - touch friendly */
     .filters{display:flex;gap:8px;flex-wrap:wrap}
     .select, .search{
-      background:transparent;border:1px solid var(--glass-border);padding:10px;border-radius:10px;color:#e6eef6;
-      min-width:120px;font-size:14px;
+      background:transparent;border:1px solid var(--glass-border);padding:12px;border-radius:10px;color:#e6eef6;
+      min-width:120px;font-size:14px;min-height:var(--touch-min);
     }
-    .search{flex:1;min-width:180px}
+    .search{flex:1;min-width:140px}
 
     /* Skeleton */
     .skeleton{background:linear-gradient(90deg,#0b1724 0%, #0f2230 50%, #0b1724 100%);height:12px;border-radius:6px;opacity:0.6}
     .skeleton-card{height:110px;border-radius:12px;background:linear-gradient(90deg,#07121a,#0b1724);border:1px solid var(--glass-border)}
 
     /* Footer */
-    footer{margin-top:18px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid var(--glass-border);display:flex;flex-direction:column;gap:8px}
+    footer{margin-top:var(--gap);padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid var(--glass-border);display:flex;flex-direction:column;gap:8px}
     .footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
     .footer-links{display:flex;gap:10px;flex-wrap:wrap}
     .muted{color:var(--muted);font-size:13px}
 
     /* Modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
-    .modal{background:linear-gradient(180deg,#071827,#071827);border-radius:12px;padding:16px;border:1px solid var(--glass-border);max-width:720px;width:100%}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:calc(12px + env(safe-area-inset-bottom));z-index:60}
+    .modal{background:linear-gradient(180deg,#071827,#071827);border-radius:12px;padding:16px;border:1px solid var(--glass-border);max-width:720px;width:100%;box-sizing:border-box}
     .modal.show{display:block}
+
+    /* Bottom sticky CTA (safe area aware) */
+    .bottom-cta{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:calc(12px + env(safe-area-inset-bottom));
+      z-index:80;
+      width:calc(100% - 32px);
+      max-width:720px;
+      display:flex;
+      justify-content:center;
+      pointer-events:auto;
+    }
+    .bottom-cta .btn{width:100%;justify-content:center;padding:14px 16px;border-radius:14px;font-size:16px}
 
     /* Accessibility focus */
     a:focus, button:focus, input:focus, select:focus{outline:3px solid rgba(0,194,168,0.18);outline-offset:2px}
 
-    /* Tiny helpers */
+    /* Hide overflow issues on small devices */
+    img,video{max-width:100%;height:auto;display:block}
+
+    /* Landscape adjustments for phones */
+    @media (orientation: landscape) and (max-width:900px){
+      .hero{flex-direction:row;align-items:center}
+      .wave-wrap{max-width:260px;height:56px}
+    }
+
+    /* Larger screens */
+    @media(min-width:1100px){
+      body{padding:20px 0}
+      .hero{padding:22px}
+    }
+
+    /* Utility */
     .hidden{display:none}
     .center{text-align:center}
     .muted-small{color:var(--muted);font-size:12px}
@@ -178,10 +245,9 @@
           <p class="muted">تعليق صوتي احترافي وفيديوهات إعلانية تصنع حضورًا أقوى لعلامتك التجارية.</p>
         </div>
       </div>
-      <nav class="sticky-cta" aria-label="روابط سريعة">
-        <a class="btn" id="btn-browse-voices" href="#voices">استعرض الأصوات</a>
-        <a class="btn secondary" id="btn-watch-videos" href="#videos">شاهد الفيديوهات</a>
-        <a class="btn" id="btn-order" href="#order">اطلب خدمتك</a>
+      <nav aria-label="روابط سريعة">
+        <a class="btn" id="btn-browse-voices" href="#voices">الأصوات</a>
+        <a class="btn secondary" id="btn-watch-videos" href="#videos">الفيديوهات</a>
       </nav>
     </header>
 
@@ -193,7 +259,6 @@
         <div class="hero-actions">
           <a class="btn" href="#voices">استعرض الأصوات</a>
           <a class="btn secondary" href="#videos">شاهد الفيديوهات</a>
-          <a class="btn" id="hero-order" href="#order">اطلب خدمتك</a>
         </div>
       </div>
       <div class="wave-wrap" aria-hidden="false" title="معاينة موجة صوتية">
@@ -208,7 +273,7 @@
         <div class="muted-small">ابحث داخل الأسماء، الوصف، النوع، اللهجة، الأسلوب، والـ Badges</div>
       </div>
 
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <input id="search" class="search" type="search" placeholder="ابحث عن اسم، لهجة، نوع، أو Badge" aria-label="بحث سريع" />
         <select id="filter-type" class="select" aria-label="فلتر النوع">
           <option value="">الكل</option>
@@ -224,7 +289,7 @@
         <select id="filter-badge" class="select" aria-label="فلتر Badge">
           <option value="">الكل</option>
         </select>
-        <button id="clear-filters" class="small-btn" aria-label="مسح الفلاتر">مسح الفلاتر</button>
+        <button id="clear-filters" class="small-btn" aria-label="مسح الفلاتر">مسح</button>
       </div>
     </section>
 
@@ -313,27 +378,20 @@
         <div class="muted-small">TikTok / YouTube متاحة في أسفل الموقع</div>
       </div>
     </footer>
+
+    <!-- Bottom sticky CTA (mobile-first) -->
+    <div class="bottom-cta" aria-hidden="false">
+      <button id="bottom-order" class="btn" aria-label="اطلب الآن عبر واتساب">اطلب الآن عبر WhatsApp</button>
+    </div>
   </main>
 
   <script>
     /******************************************************************
-     * AWJ PLUS Single-File Production-Ready Frontend
-     * - Mobile-first responsive UI
-     * - Reads real data from the provided Published CSV and Google Sheet
-     * - Dynamic Data Mapping Layer
-     * - Audio player with waveform (lazy-loaded)
-     * - Video player (lazy-loaded)
-     * - Search, Filters, Badges parsing
-     * - WhatsApp smart ordering
-     * - Skeletons and graceful error handling
-     *
-     * IMPORTANT: This single-file app uses the exact links below as data sources.
-     * Do not change these URLs in the code.
+     * Mobile-first single-file app (updated)
+     * - Uses the exact Google Sheets and Published CSV links provided.
+     * - Prioritizes mobile UX: safe-area, touch targets, fluid layout.
+     * - Lazy loads heavy players only on interaction.
      ******************************************************************/
-
-    /* ---------------------------
-       Configuration (fixed)
-       --------------------------- */
     const CONFIG = {
       sheetAdminUrl: "https://docs.google.com/spreadsheets/d/1e34QHFUFAnuAfKmjmsf3GLVWCcheFqtcUCL4HYjDaiM/edit?usp=sharing",
       publishedCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6RyvMd9y1fkqkByBmwnvUlnvG2GecjY4BQgm5Tiu-oxe0mcoWa704KhYTunUqYUlBunO4cKqb_iiQ/pub?output=csv",
@@ -342,11 +400,7 @@
       siteName: "أوج بلس"
     };
 
-    /* ---------------------------
-       Utility helpers
-       --------------------------- */
     const $ = (sel, ctx=document) => ctx.querySelector(sel);
-    const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
     const el = (tag, attrs={}, children=[]) => {
       const node = document.createElement(tag);
       for(const k in attrs){
@@ -362,40 +416,26 @@
     };
 
     /* ---------------------------
-       Data Layer
+       Data Layer (client-side CSV parsing)
        --------------------------- */
     const DataLayer = (function(){
       let rawRows = [];
-      let columns = [];
-      let mapped = []; // normalized items
+      let mapped = [];
       let badgesSet = new Set();
       let typesSet = new Set();
       let dialectsSet = new Set();
 
-      // Safe getter: returns value or empty string
       const safe = v => (v === undefined || v === null) ? "" : String(v).trim();
 
-      // Parse badges field into array
       function parseBadges(val){
         if(!val) return [];
-        // support separators: | , ; /
         return String(val).split(/[\|,;\/]+/).map(s => s.trim()).filter(Boolean);
       }
 
-      // Auto-detect common column names (case-insensitive)
-      function detectColumns(headerRow){
-        columns = headerRow.map(h => h ? String(h).trim() : "");
-      }
-
-      // Map a CSV row (object) to normalized item
       function mapRow(rowObj, index){
-        // rowObj keys are header names
-        // We'll attempt to map common fields; otherwise keep raw
         const r = {};
-        // copy all raw fields
         for(const k in rowObj) r[k] = safe(rowObj[k]);
 
-        // Common normalized fields (best-effort)
         const lowerKeys = Object.keys(rowObj).reduce((acc,k)=>{
           acc[k.toLowerCase().replace(/\s+/g,'')] = k; return acc;
         },{});
@@ -425,7 +465,6 @@
         const duration = get(['duration','time']) || "";
         const thumbnail = get(['thumbnail','poster','thumb']) || "";
 
-        // collect sets
         badges.forEach(b => badgesSet.add(b));
         if(type) typesSet.add(type);
         if(dialect) dialectsSet.add(dialect);
@@ -438,8 +477,8 @@
       }
 
       async function loadFromCsvUrl(csvUrl){
-        // returns promise
         return new Promise((resolve, reject) => {
+          if(typeof Papa === 'undefined') return reject(new Error('CSV parser unavailable'));
           Papa.parse(csvUrl, {
             download: true,
             header: true,
@@ -447,9 +486,8 @@
             complete: function(results){
               if(results && results.data){
                 rawRows = results.data;
-                detectColumns(results.meta.fields || []);
                 mapped = rawRows.map((r,i) => mapRow(r,i));
-                resolve({mapped, columns, rawRows});
+                resolve({mapped});
               } else {
                 reject(new Error("تعذر قراءة البيانات"));
               }
@@ -464,30 +502,17 @@
       function getAll(){
         return mapped.filter(i => (i.status || "").toLowerCase() !== "disabled" && (i.status || "").toLowerCase() !== "false" && (i.status || "").toLowerCase() !== "0");
       }
+      function getById(id){ return mapped.find(x => x.id === id); }
+      function getBadges(){ return Array.from(badgesSet).sort(); }
+      function getTypes(){ return Array.from(typesSet).sort(); }
+      function getDialects(){ return Array.from(dialectsSet).sort(); }
 
-      function getById(id){
-        return mapped.find(x => x.id === id);
-      }
-
-      function getBadges(){
-        return Array.from(badgesSet).sort();
-      }
-      function getTypes(){
-        return Array.from(typesSet).sort();
-      }
-      function getDialects(){
-        return Array.from(dialectsSet).sort();
-      }
-
-      return {
-        loadFromCsvUrl, getAll, getById, getBadges, getTypes, getDialects, columns
-      };
+      return { loadFromCsvUrl, getAll, getById, getBadges, getTypes, getDialects };
     })();
 
     /* ---------------------------
-       UI Rendering
+       UI (mobile-first behaviors)
        --------------------------- */
-
     const UI = (function(){
       const servicesGrid = $('#services-grid');
       const voicesGrid = $('#voices-grid');
@@ -495,19 +520,10 @@
       const voicesEmpty = $('#voices-empty');
       const videosEmpty = $('#videos-empty');
 
-      // state
-      let state = {
-        items: [],
-        filtered: [],
-        currentAudio: null,
-        currentWave: null,
-        currentPlayingId: null
-      };
+      let state = { items: [], currentWave: null, currentPlayingId: null, plyrInstance: null };
 
-      // Create a service summary card (top-level categories)
       function renderServices(items){
         servicesGrid.innerHTML = '';
-        // derive types
         const types = [...new Set(items.map(i => i.type || 'عام'))].slice(0,6);
         types.forEach(t => {
           const card = el('div',{class:'card'},[
@@ -524,13 +540,11 @@
         });
       }
 
-      // Build voice card
       function buildVoiceCard(item){
         const card = el('article',{class:'card',role:'listitem',tabindex:0});
         const avatar = el('div',{class:'avatar'});
         const img = el('img',{alt:`صورة ${item.name}`,loading:'lazy'});
-        if(item.image) img.src = item.image;
-        else img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="%230b1722"/></svg>';
+        img.src = item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="%230b1722"/></svg>';
         avatar.appendChild(img);
 
         const meta = el('div',{class:'meta'});
@@ -543,14 +557,10 @@
         ]);
         meta.appendChild(info);
 
-        // badges
-        const badgesWrap = el('div',{class:'badges',ariaHidden:'false'});
-        (item.badges || []).slice(0,6).forEach(b => {
-          badgesWrap.appendChild(el('span',{class:'badge'},[b]));
-        });
+        const badgesWrap = el('div',{class:'badges'});
+        (item.badges || []).slice(0,6).forEach(b => badgesWrap.appendChild(el('span',{class:'badge'},[b])));
         meta.appendChild(badgesWrap);
 
-        // audio player area (lazy)
         const playerWrap = el('div',{class:'player'});
         if(item.audio){
           const playBtn = el('button',{class:'small-btn',type:'button',ariaLabel:`استمع إلى ${item.name}`},['استمع الآن']);
@@ -559,37 +569,29 @@
           const controls = el('div',{class:'card-actions'},[playBtn, detailsBtn, orderBtn]);
           playerWrap.appendChild(controls);
 
-          // waveform container (hidden until loaded)
           const waveContainer = el('div',{class:'wave-wrap hidden',style:'margin-top:8px'},[
             el('div',{class:'wave-canvas',id:`wave-${item.id}`})
           ]);
           playerWrap.appendChild(waveContainer);
 
-          // events
-          playBtn.addEventListener('click', async () => {
-            await playAudio(item);
-          });
+          playBtn.addEventListener('click', async () => { await playAudio(item); });
           detailsBtn.addEventListener('click', () => openModal(item));
           orderBtn.addEventListener('click', () => orderWhatsApp(item));
         } else {
           playerWrap.appendChild(el('div',{class:'muted-small'},['لا توجد عينات صوتية متاحة']));
         }
 
-        // assemble
         card.appendChild(avatar);
         card.appendChild(meta);
         card.appendChild(playerWrap);
         return card;
       }
 
-      // Build video card
       function buildVideoCard(item){
         const card = el('article',{class:'card',role:'listitem',tabindex:0});
         const thumb = el('div',{class:'avatar'});
         const img = el('img',{alt:`صورة مصغرة ${item.name}`,loading:'lazy'});
-        if(item.thumbnail) img.src = item.thumbnail;
-        else if(item.image) img.src = item.image;
-        else img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="%230b1722"/></svg>';
+        img.src = item.thumbnail || item.image || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="%230b1722"/></svg>';
         thumb.appendChild(img);
 
         const meta = el('div',{class:'meta'});
@@ -618,7 +620,6 @@
         return card;
       }
 
-      // Render lists
       function renderVoices(items){
         voicesGrid.innerHTML = '';
         if(!items.length){
@@ -626,9 +627,7 @@
           return;
         } else voicesEmpty.classList.add('hidden');
 
-        items.forEach(item => {
-          voicesGrid.appendChild(buildVoiceCard(item));
-        });
+        items.forEach(item => voicesGrid.appendChild(buildVoiceCard(item)));
       }
       function renderVideos(items){
         videosGrid.innerHTML = '';
@@ -638,36 +637,28 @@
           return;
         } else videosEmpty.classList.add('hidden');
 
-        vids.forEach(item => {
-          videosGrid.appendChild(buildVideoCard(item));
-        });
+        vids.forEach(item => videosGrid.appendChild(buildVideoCard(item)));
       }
 
-      /* ---------------------------
-         Audio playback (lazy wavesurfer)
-         --------------------------- */
+      /* Audio playback - lazy wavesurfer */
       async function playAudio(item){
-        // stop current
         if(state.currentWave && state.currentPlayingId === item.id){
-          // toggle pause/play
           if(state.currentWave.isPlaying()) state.currentWave.pause();
           else state.currentWave.play();
           return;
         }
-        // destroy previous
-        if(state.currentWave){
-          try{ state.currentWave.destroy(); }catch(e){}
-          state.currentWave = null;
-          state.currentPlayingId = null;
-        }
+        if(state.currentWave){ try{ state.currentWave.destroy(); }catch(e){} state.currentWave = null; state.currentPlayingId = null; }
 
-        // find container
         const waveEl = document.getElementById(`wave-${item.id}`);
         if(!waveEl) return;
-        // show container
         waveEl.parentElement.classList.remove('hidden');
 
-        // create wavesurfer instance
+        // ensure WaveSurfer available
+        if(typeof WaveSurfer === 'undefined'){
+          alert('مشغل الصوت غير متاح حالياً');
+          return;
+        }
+
         const ws = WaveSurfer.create({
           container: waveEl,
           waveColor: '#0b2b3a',
@@ -678,33 +669,18 @@
           backend: 'MediaElement'
         });
 
-        // lazy load audio URL (handle Google Drive links)
         const audioUrl = normalizeMediaUrl(item.audio, 'audio');
-        try{
-          ws.load(audioUrl);
-        }catch(e){
-          showErrorToast('تعذر تشغيل العينة الصوتية حالياً');
-          return;
-        }
+        try{ ws.load(audioUrl); }catch(e){ alert('تعذر تشغيل العينة الصوتية'); return; }
 
-        ws.on('ready', () => {
-          ws.play();
-        });
-        ws.on('error', (err) => {
-          console.warn('Wave error', err);
-          showErrorToast('تعذر تشغيل العينة الصوتية حالياً');
-        });
+        ws.on('ready', () => { ws.play(); });
+        ws.on('error', () => { alert('تعذر تشغيل العينة الصوتية'); });
 
         state.currentWave = ws;
         state.currentPlayingId = item.id;
       }
 
-      /* ---------------------------
-         Video player (modal)
-         --------------------------- */
-      let plyrInstance = null;
+      /* Video player modal (lazy Plyr) */
       function openVideoPlayer(item){
-        // create modal content with video element
         const modalContent = $('#modal-content');
         modalContent.innerHTML = '';
         const videoUrl = normalizeMediaUrl(item.video, 'video');
@@ -714,16 +690,14 @@
         modalContent.appendChild(videoEl);
         showModal();
 
-        // init plyr
         setTimeout(() => {
-          if(plyrInstance) { try{ plyrInstance.destroy(); }catch(e){} }
-          plyrInstance = new Plyr('#plyr-video', {controls:['play','progress','current-time','mute','volume','fullscreen']});
+          if(typeof Plyr !== 'undefined'){
+            try{ if(state.plyrInstance) state.plyrInstance.destroy(); }catch(e){}
+            state.plyrInstance = new Plyr('#plyr-video', {controls:['play','progress','current-time','mute','volume','fullscreen']});
+          }
         }, 120);
       }
 
-      /* ---------------------------
-         Modal
-         --------------------------- */
       function showModal(){
         const backdrop = $('#modal-backdrop');
         backdrop.style.display = 'flex';
@@ -735,21 +709,17 @@
         backdrop.style.display = 'none';
         backdrop.setAttribute('aria-hidden','true');
         document.body.style.overflow = '';
-        // cleanup players
         if(state.currentWave){ try{ state.currentWave.destroy(); }catch(e){} state.currentWave = null; state.currentPlayingId = null; }
-        if(plyrInstance){ try{ plyrInstance.destroy(); }catch(e){} plyrInstance = null; }
+        if(state.plyrInstance){ try{ state.plyrInstance.destroy(); }catch(e){} state.plyrInstance = null; }
       }
 
       function openModal(item){
         const modalContent = $('#modal-content');
         modalContent.innerHTML = '';
-        const header = el('div',{class:'center'},[
+        modalContent.appendChild(el('div',{class:'center'},[
           el('h3',{},[item.name]),
           el('p',{class:'muted-small'},[item.description || '—'])
-        ]);
-        modalContent.appendChild(header);
-
-        // samples
+        ]));
         if(item.audio){
           const sampleWrap = el('div',{style:'margin-top:12px'});
           const sampleBtn = el('button',{class:'btn'},['استمع إلى العينات']);
@@ -757,19 +727,12 @@
           modalContent.appendChild(sampleWrap);
           sampleBtn.addEventListener('click', () => playAudio(item));
         }
-
-        // order button
         const orderBtn = $('#modal-order');
         orderBtn.onclick = () => orderWhatsApp(item);
-
         showModal();
       }
 
-      /* ---------------------------
-         WhatsApp ordering
-         --------------------------- */
       function orderWhatsApp(item){
-        // Build message in Arabic
         const lines = [
           `مرحبًا أوج بلس،`,
           `أرغب في طلب خدمة من المتجر.`,
@@ -787,43 +750,29 @@
         window.open(url, '_blank', 'noopener');
       }
 
-      /* ---------------------------
-         Helpers
-         --------------------------- */
       function normalizeMediaUrl(url, kind){
         if(!url) return '';
-        // handle Google Drive share links (common patterns)
         try{
           const u = String(url).trim();
-          // if it's already a direct link (starts with http)
           if(u.startsWith('http')) {
-            // Google Drive file share patterns
-            // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
             const driveFileMatch = u.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
             if(driveFileMatch){
               const id = driveFileMatch[1];
-              if(kind === 'audio' || kind === 'video') return `https://drive.google.com/uc?export=download&id=${id}`;
               return `https://drive.google.com/uc?export=download&id=${id}`;
             }
-            // open?id=FILE_ID
             const openIdMatch = u.match(/open\?id=([a-zA-Z0-9_-]{10,})/);
             if(openIdMatch){
               const id = openIdMatch[1];
               return `https://drive.google.com/uc?export=download&id=${id}`;
             }
-            // published youtube / vimeo / direct mp4
             return u;
           }
-          // fallback: return as-is
           return u;
         }catch(e){
           return url;
         }
       }
 
-      /* ---------------------------
-         Search & Filters
-         --------------------------- */
       function applyFiltersAndSearch(items){
         const q = ($('#search').value || '').trim().toLowerCase();
         const type = $('#filter-type').value;
@@ -850,9 +799,6 @@
         return res;
       }
 
-      /* ---------------------------
-         Public render entry
-         --------------------------- */
       function renderAll(items){
         state.items = items;
         renderServices(items);
@@ -860,35 +806,22 @@
         renderVideos(items);
       }
 
-      return {
-        renderAll, applyFiltersAndSearch, closeModal
-      };
+      return { renderAll, applyFiltersAndSearch, closeModal };
     })();
 
     /* ---------------------------
-       App Initialization
+       App init (mobile-first)
        --------------------------- */
-
     async function init(){
-      // show skeletons while loading
       showSkeletons();
-
       try{
         const res = await DataLayer.loadFromCsvUrl(CONFIG.publishedCsvUrl);
         const items = DataLayer.getAll();
 
-        // populate filter options dynamically
         populateFilters(DataLayer.getTypes(), DataLayer.getDialects(), DataLayer.getBadges());
-
-        // initial render
         UI.renderAll(items);
-
-        // wire search & filters
         wireControls(items);
-
-        // init hero waveform with a small generated waveform (visual only)
         initHeroWave();
-
         hideSkeletons();
       }catch(err){
         console.error(err);
@@ -898,28 +831,14 @@
     }
 
     function showSkeletons(){
-      // services
-      const servicesGrid = $('#services-grid');
-      servicesGrid.innerHTML = '';
-      for(let i=0;i<3;i++){
-        servicesGrid.appendChild(el('div',{class:'skeleton-card'}));
-      }
-      // voices
-      const voicesGrid = $('#voices-grid');
-      voicesGrid.innerHTML = '';
-      for(let i=0;i<4;i++){
-        voicesGrid.appendChild(el('div',{class:'skeleton-card'}));
-      }
-      // videos
-      const videosGrid = $('#videos-grid');
-      videosGrid.innerHTML = '';
-      for(let i=0;i<3;i++){
-        videosGrid.appendChild(el('div',{class:'skeleton-card'}));
-      }
+      const servicesGrid = $('#services-grid'); servicesGrid.innerHTML = '';
+      for(let i=0;i<3;i++) servicesGrid.appendChild(el('div',{class:'skeleton-card'}));
+      const voicesGrid = $('#voices-grid'); voicesGrid.innerHTML = '';
+      for(let i=0;i<4;i++) voicesGrid.appendChild(el('div',{class:'skeleton-card'}));
+      const videosGrid = $('#videos-grid'); videosGrid.innerHTML = '';
+      for(let i=0;i<3;i++) videosGrid.appendChild(el('div',{class:'skeleton-card'}));
     }
-    function hideSkeletons(){
-      // nothing special; render will replace content
-    }
+    function hideSkeletons(){ /* replaced by render */ }
     function showLoadError(){
       const app = document.getElementById('app');
       const err = el('div',{class:'card center'},[
@@ -929,9 +848,7 @@
         ])
       ]);
       app.prepend(err);
-      $('#retry').addEventListener('click', () => {
-        location.reload();
-      });
+      $('#retry').addEventListener('click', () => { location.reload(); });
     }
 
     function populateFilters(types, dialects, badges){
@@ -939,34 +856,23 @@
       const dialectSel = $('#filter-dialect');
       const badgeSel = $('#filter-badge');
 
-      // clear except default
       typeSel.querySelectorAll('option:not([value=""])').forEach(o=>o.remove());
       dialectSel.querySelectorAll('option:not([value=""])').forEach(o=>o.remove());
       badgeSel.querySelectorAll('option:not([value=""])').forEach(o=>o.remove());
 
-      types.forEach(t => {
-        const opt = el('option',{value:t},[t]);
-        typeSel.appendChild(opt);
-      });
-      dialects.forEach(d => {
-        const opt = el('option',{value:d},[d]);
-        dialectSel.appendChild(opt);
-      });
-      badges.forEach(b => {
-        const opt = el('option',{value:b},[b]);
-        badgeSel.appendChild(opt);
-      });
+      types.forEach(t => typeSel.appendChild(el('option',{value:t},[t])));
+      dialects.forEach(d => dialectSel.appendChild(el('option',{value:d},[d])));
+      badges.forEach(b => badgeSel.appendChild(el('option',{value:b},[b])));
     }
 
     function wireControls(allItems){
-      // search debounce
       let debounceTimer = null;
       $('#search').addEventListener('input', () => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
           const filtered = UI.applyFiltersAndSearch(allItems);
           UI.renderAll(filtered);
-        }, 250);
+        }, 220);
       });
 
       ['#filter-type','#filter-gender','#filter-dialect','#filter-badge'].forEach(sel => {
@@ -985,15 +891,10 @@
         UI.renderAll(allItems);
       });
 
-      // modal close
       $('#modal-close').addEventListener('click', UI.closeModal);
-      $('#modal-backdrop').addEventListener('click', (e) => {
-        if(e.target.id === 'modal-backdrop') UI.closeModal();
-      });
+      $('#modal-backdrop').addEventListener('click', (e) => { if(e.target.id === 'modal-backdrop') UI.closeModal(); });
 
-      // order button (top)
       $('#order-whatsapp').addEventListener('click', () => {
-        // open generic order message
         const lines = [
           `مرحبًا أوج بلس،`,
           `أرغب في طلب خدمة تعليق صوتي/فيديو.`,
@@ -1007,23 +908,16 @@
         window.open(url, '_blank', 'noopener');
       });
 
-      // hero order
-      $('#hero-order').addEventListener('click', () => {
-        document.getElementById('order').scrollIntoView({behavior:'smooth'});
-      });
+      $('#bottom-order').addEventListener('click', () => $('#order-whatsapp').click());
 
-      // quick nav
       $('#btn-browse-voices').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('voices').scrollIntoView({behavior:'smooth'}); });
       $('#btn-watch-videos').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('videos').scrollIntoView({behavior:'smooth'}); });
     }
 
-    /* ---------------------------
-       Hero waveform (visual only)
-       --------------------------- */
+    /* Hero waveform (lightweight SVG animation) */
     function initHeroWave(){
       const container = document.getElementById('hero-wave');
       if(!container) return;
-      // create a simple animated SVG waveform for visual polish (no audio)
       const svgNS = "http://www.w3.org/2000/svg";
       const svg = document.createElementNS(svgNS,'svg');
       svg.setAttribute('width','100%');
@@ -1039,11 +933,10 @@
       svg.appendChild(path);
       container.appendChild(svg);
 
-      // animate path with JS subtle motion
       let t = 0;
       function animate(){
         t += 0.02;
-        const amp = 8;
+        const amp = 6;
         const d = [];
         for(let x=0;x<=320;x+=20){
           const y = 30 + Math.sin((x/20)+t) * (Math.sin(t*0.7)*amp + 2);
@@ -1055,34 +948,10 @@
       requestAnimationFrame(animate);
     }
 
-    /* ---------------------------
-       Error toast
-       --------------------------- */
-    function showErrorToast(msg){
-      // simple alert for now (keeps UI minimal)
-      alert(msg);
-    }
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') UI.closeModal(); });
 
-    /* ---------------------------
-       Start app
-       --------------------------- */
+    // Start
     init();
-
-    /* ---------------------------
-       Accessibility: keyboard shortcuts
-       --------------------------- */
-    document.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape') UI.closeModal();
-    });
-
-    /* ---------------------------
-       SEO & Performance notes (in-code, not shown to users)
-       - Uses lazy loading for images via loading="lazy"
-       - Audio/video are loaded only when user interacts
-       - CSV is fetched once and parsed client-side
-       - Data Layer normalizes badges and fields dynamically
-       --------------------------- */
-
   </script>
 </body>
 </html>
