@@ -3,449 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>أوج بلس | أوج الصوت والإعلان</title>
-    <meta name="description" content="منصة أوج بلس - اختيارك الأول للتعليق الصوتي وإنتاج الفيديوهات الإعلانية الاحترافية.">
+    <title>أوج بلس | AWJ PLUS - منصة الإنتاج الصوتي والمرئي</title>
     
     <!-- الخطوط والجماليات -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1a1a1a',
-                        accent: '#c5a059', // لون ذهبي خافت للمسة فخامة
+                        primary: '#0A0A0A',
+                        secondary: '#141414',
+                        accent: '#C5A059', // Gold Accent
+                        accent_hover: '#A6864A',
                     },
-                    fontFamily: {
-                        sans: ['Tajawal', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Tajawal', 'sans-serif'] },
                 }
             }
         }
     </script>
 
     <style>
-        :root { --accent: #c5a059; }
-        body { font-family: 'Tajawal', sans-serif; transition: background-color 0.3s; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-        .dark .glass { background: rgba(26, 26, 26, 0.8); }
-        .hero-gradient { background: radial-gradient(circle at center, #2d2d2d 0%, #1a1a1a 100%); }
-        .skeleton { background: #e0e0e0; position: relative; overflow: hidden; }
-        .skeleton::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); animation: loading 1.5s infinite; }
-        @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-        /* تخصيص الـ Audio Player */
-        input[type=range]::-webkit-slider-runnable-track { background: #ddd; height: 4px; border-radius: 2px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; border-radius: 50%; background: var(--accent); margin-top: -4px; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .custom-video-container iframe { width: 100%; aspect-ratio: 16/9; border-radius: 12px; }
+        body { background-color: #0A0A0A; color: #ffffff; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        .gold-gradient { background: linear-gradient(135deg, #C5A059 0%, #8E6D31 100%); }
+        .talent-card:hover .play-overlay { opacity: 1; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+        
+        /* مشغل الصوت المخصص */
+        .audio-wave { height: 3px; background: rgba(197, 160, 89, 0.2); border-radius: 2px; position: relative; cursor: pointer; }
+        .audio-progress { height: 100%; background: #C5A059; width: 0%; border-radius: 2px; }
+
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(197, 160, 89, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        }
+        .btn-pulse { animation: pulse-gold 2s infinite; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-primary dark:text-gray-100 overflow-x-hidden">
+<body class="font-sans antialiased overflow-x-hidden custom-scrollbar">
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass border-b border-gray-200 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center text-white font-bold text-xl">أ</div>
-                <span class="text-xl font-extrabold tracking-tight">أوج <span class="text-accent">بلس</span></span>
+    <nav class="fixed top-0 w-full z-50 glass">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 gold-gradient rounded-lg flex items-center justify-center shadow-lg shadow-accent/20">
+                    <span class="text-white font-black text-xl">أ</span>
+                </div>
+                <h1 class="text-2xl font-black tracking-tighter">أوج <span class="text-accent font-light">بلس</span></h1>
             </div>
             <div class="flex items-center gap-4">
-                <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <i data-lucide="moon" class="hidden dark:block"></i>
-                    <i data-lucide="sun" class="block dark:hidden"></i>
-                </button>
-                <a href="#contact" class="hidden md:block bg-accent text-white px-5 py-2 rounded-full font-medium hover:opacity-90 transition">تواصل معنا</a>
+                <a href="https://wa.me/966539167059" target="_blank" class="hidden md:flex items-center gap-2 bg-accent hover:bg-accent_hover text-black px-6 py-2.5 rounded-full font-bold transition-all text-sm">
+                    <i data-lucide="phone-call" class="w-4 h-4"></i>
+                    اطلب خدمتك الآن
+                </a>
+                <button class="md:hidden text-white"><i data-lucide="menu"></i></button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 px-4 hero-gradient text-white overflow-hidden">
-        <div class="max-w-5xl mx-auto text-center relative z-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">نصنع للصوت صورة... <br><span class="text-accent">وللإعلان حضوراً</span></h1>
-            <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
-                منصة أوج بلس تضم نخبة من المعلقين والمعلقات الصوتيين لتقديم إنتاج إعلاني متكامل يلامس القلوب ويحقق النتائج.
+    <header class="relative pt-40 pb-24 px-6 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-10 pointer-events-none">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-block py-1 px-4 rounded-full border border-accent/30 text-accent text-sm mb-6 bg-accent/5">وكالة إنتاج إعلاني متكاملة</span>
+            <h2 id="hero-title" class="text-5xl md:text-7xl font-black mb-8 leading-tight">صوتك يبدأ من <span class="text-accent">أوج بلس</span></h2>
+            <p id="hero-desc" class="text-gray-400 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
+                نخبة من المعلقين الصوتيين وأحدث تقنيات الإنتاج المرئي لنضع علامتك التجارية في القمة.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#voices" class="bg-accent text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition hover:scale-105">
-                    <i data-lucide="mic"></i> استعرض المعلقين
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                <a href="#talents" class="w-full sm:w-auto px-10 py-4 gold-gradient text-black font-black rounded-2xl hover:scale-105 transition-transform flex items-center justify-center gap-2 btn-pulse">
+                    <i data-lucide="mic-2"></i> استكشف الأصوات
                 </a>
-                <a href="#portfolio" class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition hover:bg-white/20">
-                    <i data-lucide="play-circle"></i> شاهد أعمالنا
+                <a href="#videos" class="w-full sm:w-auto px-10 py-4 glass text-white font-bold rounded-2xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="play-circle"></i> أعمالنا الإعلانية
                 </a>
             </div>
         </div>
-        <!-- Decorative Wave -->
-        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
-            <svg class="relative block w-full h-12" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C58.47,112.49,123.39,110.3,181.33,103.62,246.22,96.14,282.49,63.76,321.39,56.44Z" class="fill-gray-50 dark:fill-primary"></path>
-            </svg>
-        </div>
-    </section>
+    </header>
 
-    <!-- Stats/Services -->
-    <section class="py-12 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
-                <div class="text-accent mb-2 flex justify-center"><i data-lucide="mic-2"></i></div>
-                <h3 class="font-bold text-lg">تعليق محترف</h3>
-            </div>
-            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
-                <div class="text-accent mb-2 flex justify-center"><i data-lucide="video"></i></div>
-                <h3 class="font-bold text-lg">فيديو إعلاني</h3>
-            </div>
-            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
-                <div class="text-accent mb-2 flex justify-center"><i data-lucide="languages"></i></div>
-                <h3 class="font-bold text-lg">لهجات متعددة</h3>
-            </div>
-            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
-                <div class="text-accent mb-2 flex justify-center"><i data-lucide="Zap"></i></div>
-                <h3 class="font-bold text-lg">سرعة التنفيذ</h3>
-            </div>
-        </div>
-    </section>
+    <!-- Content Sections -->
+    <main class="max-w-7xl mx-auto px-6 space-y-32 pb-32">
 
-    <!-- Filters & Search -->
-    <section id="voices" class="py-8 px-4 sticky top-16 z-40 glass border-b border-gray-100 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto space-y-4">
-            <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-                <div class="relative w-full md:w-96">
-                    <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
-                    <input type="text" id="searchInput" placeholder="ابحث عن معلق، لهجة، أو خدمة..." 
-                        class="w-full pr-12 pl-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 focus:ring-2 focus:ring-accent outline-none">
+        <!-- Search & Filter Bar -->
+        <section id="talents" class="space-y-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <h3 class="text-3xl font-black mb-2">الأصوات الإحترافية</h3>
+                    <p class="text-gray-500">اختر الصوت الذي يمثل هويتك من بين نخبة المعلقين</p>
                 </div>
-                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 w-full md:w-auto">
-                    <button onclick="filterContent('all')" class="filter-btn active bg-accent text-white px-6 py-2 rounded-full whitespace-nowrap">الكل</button>
-                    <button onclick="filterContent('voice')" class="filter-btn bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full whitespace-nowrap">معلقين</button>
-                    <button onclick="filterContent('video')" class="filter-btn bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full whitespace-nowrap">فيديو</button>
-                    <button onclick="filterContent('خليجي')" class="filter-btn bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full whitespace-nowrap">خليجي</button>
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <div class="relative group">
+                        <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-accent transition-colors"></i>
+                        <input type="text" id="voiceSearch" placeholder="ابحث باسم المعلق أو اللهجة..." 
+                               class="w-full sm:w-72 bg-secondary border border-white/10 rounded-xl py-3 pr-12 pl-4 focus:border-accent outline-none transition-all">
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Main Grid -->
-    <main class="py-12 px-4 max-w-7xl mx-auto">
-        <div id="contentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Skeleton Loading Items -->
-            <div class="skeleton h-80 rounded-3xl"></div>
-            <div class="skeleton h-80 rounded-3xl"></div>
-            <div class="skeleton h-80 rounded-3xl"></div>
-        </div>
-        <div id="emptyState" class="hidden text-center py-20">
-            <i data-lucide="info" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
-            <h3 class="text-xl font-bold">لم نجد نتائج تطابق بحثك</h3>
-            <p class="text-gray-500">جرب تغيير الكلمات المفتاحية أو الفلتر</p>
-        </div>
+            <!-- Voice Talents Grid -->
+            <div id="talents-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Skeleton Loading -->
+                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
+                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
+                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
+                <div class="h-80 bg-secondary rounded-3xl animate-pulse"></div>
+            </div>
+        </section>
+
+        <!-- Video Portfolio -->
+        <section id="videos" class="space-y-10">
+            <div class="text-center">
+                <h3 class="text-3xl font-black mb-2">الإنتاج المرئي</h3>
+                <p class="text-gray-500">فيديوهات إعلانية سينمائية تخطف الأنظار</p>
+            </div>
+
+            <div id="videos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Videos will be injected here -->
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 pt-16 pb-8 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            <div>
-                <h2 class="text-2xl font-bold mb-4">أوج <span class="text-accent">بلس</span></h2>
-                <p class="text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
-                    المكان الأمثل لاختيار الصوت المناسب لمشروعك القادم. نجمع لك أفضل المواهب في مكان واحد.
-                </p>
-                <div class="flex gap-4">
-                    <a href="https://www.tiktok.com/@awj.store.sa" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-accent hover:text-white transition"><i data-lucide="music-2"></i></a>
-                    <a href="https://youtube.com/@awj.stores" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-accent hover:text-white transition"><i data-lucide="youtube"></i></a>
-                    <a href="mailto:awj.plus.store.s@gmail.com" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-accent hover:text-white transition"><i data-lucide="mail"></i></a>
+    <footer class="bg-secondary border-t border-white/5 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-1 md:col-span-2 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 gold-gradient rounded flex items-center justify-center font-bold text-black text-xs">أ</div>
+                        <span class="text-xl font-black">أوج بلس</span>
+                    </div>
+                    <p id="footer-desc" class="text-gray-500 max-w-sm leading-relaxed"></p>
+                    <div class="flex items-center gap-4">
+                        <a id="tiktok-link" href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-accent transition-all"><i data-lucide="music-2" class="w-5 h-5"></i></a>
+                        <a id="youtube-link" href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-accent transition-all"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                        <a id="email-link" href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-accent transition-all"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">المنصة</h4>
+                    <ul class="space-y-4 text-gray-500 text-sm">
+                        <li><a href="#talents" class="hover:text-accent transition">المعلقين الصوتيين</a></li>
+                        <li><a href="#videos" class="hover:text-accent transition">الفيديوهات الإعلانية</a></li>
+                        <li><a href="#" class="hover:text-accent transition">انضم كمعلق</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">الدعم</h4>
+                    <ul class="space-y-4 text-gray-500 text-sm">
+                        <li>تواصل معنا: <span id="site-whatsapp" class="text-white"></span></li>
+                        <li>المقر: المملكة العربية السعودية</li>
+                    </ul>
                 </div>
             </div>
-            <div>
-                <h3 class="font-bold text-lg mb-6">روابط سريعة</h3>
-                <ul class="space-y-4 text-gray-500">
-                    <li><a href="#" class="hover:text-accent">الرئيسية</a></li>
-                    <li><a href="#voices" class="hover:text-accent">المعلقين</a></li>
-                    <li><a href="#portfolio" class="hover:text-accent">نماذج الأعمال</a></li>
-                    <li><a href="https://wa.me/966539167059" class="hover:text-accent">اطلب خدمتك</a></li>
-                </ul>
+            <div class="pt-10 border-t border-white/5 text-center text-gray-600 text-xs">
+                &copy; 2024 أوج بلس - جميع الحقوق محفوظة. تم التطوير بأعلى معايير الجودة.
             </div>
-            <div>
-                <h3 class="font-bold text-lg mb-6">تواصل مباشر</h3>
-                <a href="https://wa.me/966539167059" class="flex items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-accent transition group">
-                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="phone"></i></div>
-                    <div>
-                        <span class="block text-sm text-gray-500">واتساب</span>
-                        <span class="font-bold">+966 53 916 7059</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto pt-8 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-500">
-            &copy; 2024 أوج بلس. جميع الحقوق محفوظة.
         </div>
     </footer>
 
-    <!-- Details Modal -->
-    <div id="modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center px-4">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="relative bg-white dark:bg-gray-900 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-4 left-4 z-10 w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white backdrop-blur-md">
-                <i data-lucide="x"></i>
-            </button>
-            <div id="modalContent" class="max-h-[90vh] overflow-y-auto">
-                <!-- Content injected via JS -->
+    <!-- Talent Details Modal -->
+    <div id="modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4 overflow-y-auto pt-10 pb-10">
+        <div class="fixed inset-0 bg-black/90 backdrop-blur-md transition-opacity"></div>
+        <div class="relative bg-secondary border border-white/10 w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-2xl z-10 transition-all scale-95 opacity-0 duration-300" id="modal-content">
+            <button onclick="closeModal()" class="absolute top-6 left-6 w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all z-20"><i data-lucide="x"></i></button>
+            <div class="flex flex-col md:flex-row h-full">
+                <div class="w-full md:w-2/5 relative h-80 md:h-auto">
+                    <img id="modal-img" src="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent md:bg-gradient-to-l"></div>
+                </div>
+                <div class="w-full md:w-3/5 p-8 md:p-12 space-y-8 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                    <div>
+                        <h2 id="modal-name" class="text-4xl font-black mb-2"></h2>
+                        <p id="modal-title" class="text-accent font-bold"></p>
+                    </div>
+                    <div class="flex flex-wrap gap-2" id="modal-badges"></div>
+                    <div class="space-y-4">
+                        <h4 class="font-bold flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-accent"></i> نبذة تعريفية</h4>
+                        <p id="modal-bio" class="text-gray-400 leading-relaxed text-sm"></p>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="font-bold flex items-center gap-2"><i data-lucide="play-circle" class="w-4 h-4 text-accent"></i> النماذج الصوتية</h4>
+                        <div id="modal-samples" class="space-y-4"></div>
+                    </div>
+                    <a id="modal-whatsapp" href="#" target="_blank" class="block w-full py-5 gold-gradient text-black text-center font-black rounded-2xl shadow-xl shadow-accent/10 hover:scale-[1.02] transition-all">
+                        اطلب هذا الصوت الآن
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- JavaScript Platform Logic -->
     <script>
-        // CONFIGURATION
-        const CONFIG = {
-            DATA_SOURCE_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6RyvMd9y1fkqkByBmwnvUlnvG2GecjY4BQgm5Tiu-oxe0mcoWa704KhYTunUqYUlBunO4cKqb_iiQ/pub?output=csv",
-            WHATSAPP_NUMBER: "966539167059",
-            DEFAULT_IMAGE: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=400",
-        };
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6RyvMd9y1fkqkByBmwnvUlnvG2GecjY4BQgm5Tiu-oxe0mcoWa704KhYTunUqYUlBunO4cKqb_iiQ/pub?output=csv';
 
-        let allData = [];
-        let currentFilter = 'all';
+        let SITE_DATA = { talents: [], samples: [], videos: [], config: {} };
 
-        // Initialize Icons
-        lucide.createIcons();
-
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        }
-
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
-
-        // Fetch Data
-        async function loadData() {
+        // 1. Fetch & Parse Data
+        async function initPlatform() {
             try {
-                const response = await fetch(CONFIG.DATA_SOURCE_URL);
-                const csvText = await response.text();
-                allData = parseCSV(csvText);
-                renderGrid(allData);
-            } catch (error) {
-                console.error("Error loading data", error);
-                document.getElementById('contentGrid').innerHTML = `
-                    <div class="col-span-full text-center py-10">
-                        <p class="text-red-500">عذراً، حدث خطأ أثناء تحميل البيانات.</p>
-                        <button onclick="loadData()" class="mt-4 bg-accent text-white px-6 py-2 rounded-lg">إعادة المحاولة</button>
+                const response = await fetch(CSV_URL);
+                const data = await response.text();
+                
+                // Parse CSV with PapaParse
+                const parsed = Papa.parse(data, { header: true, skipEmptyLines: true }).data;
+                
+                // Segment data based on 'id' patterns
+                SITE_DATA.talents = parsed.filter(r => r.id && r.id.startsWith('voice-'));
+                SITE_DATA.samples = parsed.filter(r => r.id && r.id.startsWith('sample-'));
+                SITE_DATA.videos = parsed.filter(r => r.id && r.id.startsWith('video-'));
+                
+                // Config mapping
+                parsed.filter(r => r.key).forEach(r => SITE_DATA.config[r.key] = r.value);
+
+                applyConfig();
+                renderTalents();
+                renderVideos();
+                lucide.createIcons();
+            } catch (err) {
+                console.error("Platform Init Error:", err);
+            }
+        }
+
+        // 2. Apply Site Configuration
+        function applyConfig() {
+            const conf = SITE_DATA.config;
+            if(conf.hero_title) document.getElementById('hero-title').innerText = conf.hero_title;
+            if(conf.hero_description) document.getElementById('hero-desc').innerText = conf.hero_description;
+            if(conf.footer_description) document.getElementById('footer-desc').innerText = conf.footer_description;
+            if(conf.whatsapp) document.getElementById('site-whatsapp').innerText = "+" + conf.whatsapp;
+            if(conf.tiktok) document.getElementById('tiktok-link').href = conf.tiktok;
+            if(conf.youtube) document.getElementById('youtube-link').href = conf.youtube;
+            if(conf.email) document.getElementById('email-link').href = "mailto:" + conf.email;
+        }
+
+        // 3. Render Voice Talents
+        function renderTalents(filterText = '') {
+            const container = document.getElementById('talents-container');
+            container.innerHTML = '';
+
+            const filtered = SITE_DATA.talents.filter(t => 
+                t.name.includes(filterText) || t.dialect.includes(filterText) || t.description.includes(filterText)
+            );
+
+            filtered.forEach(talent => {
+                const card = document.createElement('div');
+                card.className = "talent-card group relative bg-secondary border border-white/5 rounded-3xl overflow-hidden hover:border-accent/30 transition-all cursor-pointer";
+                card.onclick = () => openTalentModal(talent.id);
+                
+                card.innerHTML = `
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="${talent.avatar_url}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/20 to-transparent"></div>
+                        <div class="absolute top-4 right-4 bg-accent/90 text-black text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-tighter">
+                            ${talent.dialect}
+                        </div>
+                    </div>
+                    <div class="p-6 relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-xl font-black group-hover:text-accent transition-colors">${talent.name}</h4>
+                                <p class="text-xs text-gray-500">${talent.title}</p>
+                            </div>
+                            <div class="w-10 h-10 glass rounded-full flex items-center justify-center text-accent group-hover:gold-gradient group-hover:text-black transition-all">
+                                <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                            </div>
+                        </div>
                     </div>
                 `;
-            }
-        }
-
-        function parseCSV(text) {
-            const lines = text.split('\n');
-            const headers = lines[0].split(',').map(h => h.trim());
-            return lines.slice(1).map(line => {
-                const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); // Advanced split to handle commas in quotes
-                const obj = {};
-                headers.forEach((header, i) => {
-                    if(values[i]) obj[header] = values[i].replace(/^"|"$/g, '').trim();
-                });
-                return obj;
-            }).filter(item => item.id && item.active === 'true');
-        }
-
-        // Audio Management
-        let currentAudio = null;
-        let currentBtn = null;
-
-        function toggleAudio(id, url, btn) {
-            if (currentAudio && !currentAudio.paused) {
-                currentAudio.pause();
-                if (currentBtn) currentBtn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
-                lucide.createIcons();
-                if (currentAudio.src.includes(url)) {
-                    currentAudio = null;
-                    return;
-                }
-            }
-
-            const audio = new Audio(url);
-            audio.play();
-            btn.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i>`;
+                container.appendChild(card);
+            });
             lucide.createIcons();
-            
-            currentAudio = audio;
-            currentBtn = btn;
-
-            audio.onended = () => {
-                btn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
-                lucide.createIcons();
-                currentAudio = null;
-            };
         }
 
-        // Render Functions
-        function renderGrid(data) {
-            const grid = document.getElementById('contentGrid');
-            const empty = document.getElementById('emptyState');
-            grid.innerHTML = '';
+        // 4. Render Videos
+        function renderVideos() {
+            const container = document.getElementById('videos-container');
+            container.innerHTML = '';
+            
+            SITE_DATA.videos.forEach(vid => {
+                const card = document.createElement('div');
+                card.className = "glass rounded-3xl overflow-hidden group";
+                card.innerHTML = `
+                    <div class="relative aspect-video">
+                        <img src="${vid.thumbnail_url}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+                            <button onclick="playVideo('${vid.video_url}')" class="w-16 h-16 gold-gradient rounded-full flex items-center justify-center text-black shadow-2xl">
+                                <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-[10px] glass px-2 py-1 rounded">${vid.duration}</div>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-bold mb-2">${vid.title}</h4>
+                        <p class="text-xs text-gray-500 line-clamp-2">${vid.description}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-            const filtered = data.filter(item => {
-                const matchesFilter = currentFilter === 'all' || item.type === currentFilter || item.category === currentFilter || item.dialect === currentFilter;
-                const matchesSearch = item.name.toLowerCase().includes(searchTerm) || 
-                                    (item.dialect && item.dialect.toLowerCase().includes(searchTerm)) ||
-                                    (item.specialty && item.specialty.toLowerCase().includes(searchTerm));
-                return matchesFilter && matchesSearch;
+        // 5. Talent Modal Logic
+        let currentAudio = null;
+
+        function openTalentModal(id) {
+            const talent = SITE_DATA.talents.find(t => t.id === id);
+            const samples = SITE_DATA.samples.filter(s => s.talent_id === id);
+            
+            document.getElementById('modal-img').src = talent.avatar_url;
+            document.getElementById('modal-name').innerText = talent.name;
+            document.getElementById('modal-title').innerText = talent.title;
+            document.getElementById('modal-bio').innerText = talent.bio || talent.description;
+            
+            // Badges
+            const badgeContainer = document.getElementById('modal-badges');
+            badgeContainer.innerHTML = '';
+            talent.badges.split('|').forEach(b => {
+                badgeContainer.innerHTML += `<span class="text-[10px] px-3 py-1 glass rounded-full text-gray-300 border border-white/5">${b}</span>`;
             });
 
-            if (filtered.length === 0) {
-                empty.classList.remove('hidden');
-            } else {
-                empty.classList.add('hidden');
-                filtered.forEach(item => {
-                    grid.appendChild(createCard(item));
-                });
-            }
-            lucide.createIcons();
-        }
-
-        function createCard(item) {
-            const div = document.createElement('div');
-            div.className = "bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition hover:shadow-xl hover:-translate-y-1 group";
-            
-            const badges = item.badges ? item.badges.split(',').map(b => `<span class="bg-accent/10 text-accent text-[10px] px-2 py-1 rounded-full font-bold">${b}</span>`).join('') : '';
-
-            const isVideo = item.type === 'video';
-            const mediaAction = isVideo 
-                ? `<button onclick="openModal('${item.id}')" class="bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-accent transition"><i data-lucide="play"></i></button>`
-                : `<button onclick="toggleAudio('${item.id}', '${item.audio_url}', this)" class="bg-accent text-white p-4 rounded-full shadow-lg shadow-accent/30 hover:scale-110 transition"><i data-lucide="play"></i></button>`;
-
-            div.innerHTML = `
-                <div class="relative h-48 overflow-hidden">
-                    <img src="${item.image_url || CONFIG.DEFAULT_IMAGE}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-4 right-4 flex gap-1">${badges}</div>
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition duration-300">
-                        ${mediaAction}
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-bold text-xl">${item.name}</h3>
-                        <span class="text-xs text-gray-400 font-medium">${item.dialect || ''}</span>
-                    </div>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2 mb-6">${item.short_description || item.description || ''}</p>
-                    <div class="flex gap-2">
-                        <button onclick="openModal('${item.id}')" class="flex-1 bg-gray-100 dark:bg-gray-700 py-3 rounded-xl font-bold text-sm hover:bg-gray-200 transition">تفاصيل</button>
-                        <button onclick="requestService('${item.id}')" class="flex-1 bg-accent text-white py-3 rounded-xl font-bold text-sm shadow-md hover:opacity-90 transition">طلب الخدمة</button>
-                    </div>
-                </div>
-            `;
-            return div;
-        }
-
-        // Modal Logic
-        function openModal(id) {
-            const item = allData.find(i => i.id === id);
-            if (!item) return;
-
-            const modal = document.getElementById('modal');
-            const content = document.getElementById('modalContent');
-            
-            let mediaSection = '';
-            if (item.type === 'video') {
-                mediaSection = `<div class="custom-video-container mb-6">${item.video_url.includes('iframe') ? item.video_url : `<iframe src="${item.video_url}" frameborder="0" allowfullscreen></iframe>`}</div>`;
-            } else if (item.audio_url) {
-                mediaSection = `
-                    <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-2xl mb-6">
-                        <p class="text-sm font-bold mb-3">نموذج صوتي</p>
-                        <audio controls class="w-full">
-                            <source src="${item.audio_url}" type="audio/mpeg">
-                        </audio>
+            // Samples
+            const sampleContainer = document.getElementById('modal-samples');
+            sampleContainer.innerHTML = '';
+            samples.forEach(s => {
+                const sampleRow = document.createElement('div');
+                sampleRow.className = "p-4 glass rounded-2xl flex items-center gap-4 group";
+                sampleRow.innerHTML = `
+                    <button onclick="toggleAudio('${s.audio_url}', this)" class="w-12 h-12 rounded-full border border-accent/20 flex items-center justify-center text-accent hover:gold-gradient hover:text-black transition-all">
+                        <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+                    </button>
+                    <div class="flex-1">
+                        <p class="text-sm font-bold">${s.title}</p>
+                        <p class="text-[10px] text-gray-500">${s.type} • ${s.duration}</p>
+                        <div class="audio-wave mt-2"><div class="audio-progress"></div></div>
                     </div>
                 `;
-            }
+                sampleContainer.appendChild(sampleRow);
+            });
 
-            content.innerHTML = `
-                <div class="relative h-64 overflow-hidden">
-                    <img src="${item.image_url || CONFIG.DEFAULT_IMAGE}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    <div class="absolute bottom-6 right-6 text-white">
-                        <span class="bg-accent text-white text-[10px] px-3 py-1 rounded-full uppercase font-black mb-2 inline-block tracking-widest">${item.type === 'voice' ? 'معلق صوتي' : 'فيديو إعلاني'}</span>
-                        <h2 class="text-3xl font-black">${item.name}</h2>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <div class="grid grid-cols-3 gap-4 mb-8">
-                        <div class="text-center p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
-                            <span class="block text-xs text-gray-400 mb-1">اللهجة</span>
-                            <span class="font-bold">${item.dialect || '-'}</span>
-                        </div>
-                        <div class="text-center p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
-                            <span class="block text-xs text-gray-400 mb-1">اللغة</span>
-                            <span class="font-bold">${item.language || 'العربية'}</span>
-                        </div>
-                        <div class="text-center p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
-                            <span class="block text-xs text-gray-400 mb-1">النوع</span>
-                            <span class="font-bold">${item.gender === 'female' ? 'نسائي' : 'رجالي'}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-8">
-                        <h4 class="font-bold text-lg mb-3">عن الخدمة</h4>
-                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">${item.description || 'لا يوجد وصف متاح.'}</p>
-                    </div>
+            // WhatsApp link
+            const msg = encodeURIComponent(talent.whatsapp_message || `مرحباً أوج بلس، أرغب بطلب تعليق صوتي من ${talent.name}`);
+            document.getElementById('modal-whatsapp').href = `https://wa.me/${SITE_DATA.config.whatsapp}?text=${msg}`;
 
-                    ${mediaSection}
-
-                    <button onclick="requestService('${item.id}')" class="w-full bg-accent text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-accent/20 hover:scale-[1.02] transition">
-                        اطلب هذا الصوت الآن
-                    </button>
-                </div>
-            `;
-            
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            // Show Modal
+            const m = document.getElementById('modal');
+            m.classList.replace('hidden', 'flex');
+            setTimeout(() => {
+                document.getElementById('modal-content').classList.replace('scale-95', 'scale-100');
+                document.getElementById('modal-content').classList.replace('opacity-0', 'opacity-100');
+            }, 10);
             lucide.createIcons();
         }
 
         function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            if (currentAudio) currentAudio.pause();
+            if(currentAudio) { currentAudio.pause(); currentAudio = null; }
+            const m = document.getElementById('modal');
+            document.getElementById('modal-content').classList.replace('scale-100', 'scale-95');
+            document.getElementById('modal-content').classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => m.classList.replace('flex', 'hidden'), 300);
         }
 
-        // WhatsApp Ordering
-        function requestService(id) {
-            const item = allData.find(i => i.id === id);
-            const text = `مرحباً أوج بلس، أرغب في طلب خدمة:
-النوع: ${item.type === 'voice' ? 'تعليق صوتي' : 'إنتاج فيديو'}
-الاسم: ${item.name}
-ID: ${item.id}
-يرجى التواصل معي للتفاصيل.`;
-            
-            const url = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+        // 6. Audio Player Logic
+        function toggleAudio(url, btn) {
+            const icon = btn.querySelector('i');
+            const progress = btn.parentElement.querySelector('.audio-progress');
+
+            if (currentAudio && currentAudio.src === url) {
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    btn.classList.add('gold-gradient', 'text-black');
+                } else {
+                    currentAudio.pause();
+                    btn.classList.remove('gold-gradient', 'text-black');
+                }
+            } else {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    document.querySelectorAll('.audio-progress').forEach(p => p.style.width = '0%');
+                    document.querySelectorAll('#modal-samples button').forEach(b => b.classList.remove('gold-gradient', 'text-black'));
+                }
+                currentAudio = new Audio(url);
+                currentAudio.play();
+                btn.classList.add('gold-gradient', 'text-black');
+
+                currentAudio.ontimeupdate = () => {
+                    const pct = (currentAudio.currentTime / currentAudio.duration) * 100;
+                    progress.style.width = pct + '%';
+                };
+                
+                currentAudio.onended = () => {
+                    btn.classList.remove('gold-gradient', 'text-black');
+                    progress.style.width = '0%';
+                };
+            }
+            lucide.createIcons();
+        }
+
+        // 7. Video Player (Simple Window for Demo)
+        function playVideo(url) {
             window.open(url, '_blank');
         }
 
-        // Search & Filter Logic
-        let searchTerm = '';
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            searchTerm = e.target.value.toLowerCase();
-            renderGrid(allData);
-        });
+        // 8. Search Event
+        document.getElementById('voiceSearch').oninput = (e) => renderTalents(e.target.value);
 
-        function filterContent(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-accent', 'text-white');
-                btn.classList.add('bg-gray-100', 'dark:bg-gray-800');
-            });
-            event.target.classList.add('active', 'bg-accent', 'text-white');
-            renderGrid(allData);
-        }
-
-        // Start
-        loadData();
+        // Start Platform
+        initPlatform();
     </script>
 </body>
 </html>
